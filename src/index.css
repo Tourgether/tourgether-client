@@ -5,25 +5,29 @@ html, body {
     height: 100%;
     background: #f2f2f2;
     font-family: system-ui, sans-serif;
+    overflow-x: hidden;
 }
-
+  
 #root {
     width: 100%;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-}  
-
+}
+  
 .page-container {
     flex: 1;
     width: 100%;
     max-width: 428px;
     min-height: 100vh;
     background: #ffffff;
-    padding: 16px;
+    padding: 
+      calc(16px + env(safe-area-inset-top, 0px)) 
+      calc(16px + env(safe-area-inset-right, 0px)) 
+      calc(16px + env(safe-area-inset-bottom, 0px)) 
+      calc(16px + env(safe-area-inset-left, 0px));
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
 }
-  
