@@ -1,0 +1,49 @@
+@import './variables.css';
+
+.tab-bar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  max-width: 428px;
+  background: var(--color-background);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px 0;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+.tab-item {
+  text-align: center;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 12px;
+  color: var(--color-gray);
+}
+
+.icon {
+  font-size: 22px;
+  margin-bottom: 4px;
+  color: var(--color-gray);
+}
+
+.label {
+  font-size: 10px;
+  color: var(--color-gray);
+}
+
+.icon.active svg {
+  fill: url(#tabGradient);
+}
+
+.label.active {
+    background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+  
+    background-clip: text;
+  
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+  
+.icon svg { fill: currentColor; }
