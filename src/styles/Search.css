@@ -1,0 +1,98 @@
+/* 검색바 */
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: var(--color-background);
+  border: 1px solid var(--color-primary);
+  border-radius: 50px;
+  padding: 8px 16px;
+  margin-top: 24px;
+  margin-bottom: 16px;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: var(--color-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  margin: 0 8px;
+}
+
+/* 검색 결과 리스트 */
+.search-results {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0;
+  border-top: 1px solid #ddd;
+}
+
+/* 검색 결과 항목 */
+.search-result-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.search-result-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 아이콘 */
+.search-result-icon {
+  font-size: 24px;
+  color: var(--color-primary);
+  background: linear-gradient(to right, #6B7BFF, #B226A8);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* 텍스트 */
+.search-result-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.search-result-title {
+  font-weight: bold;
+  font-size: 16px;
+  color: #333333;
+  margin-bottom: 10px; /* ✅ 제목과 주소 간격 추가 */
+}
+
+.search-result-address {
+  font-size: 13px;
+  color: #666666;
+}
+
+/* 썸네일 이미지 */
+.search-thumbnail {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-left: 12px;
+}
+
+/* 검색 결과 없음 */
+.empty-result {
+  margin-top: 32px;
+  text-align: center;
+  color: #888888;
+  font-size: 14px;
+}

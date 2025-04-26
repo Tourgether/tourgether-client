@@ -1,0 +1,63 @@
+import { useState } from 'react';
+import { fetchAttractionsByKeyword, AttractionSummary } from '../api/attractionApi';
+import SearchBar from '../components/common/SearchBar';
+import SearchResultItem from '../components/common/SearchResultItem';
+import PageContainer from '../components/common/PageContainer';
+import LoadingSpinner from '../components/common/LoadingSpinner';
+import '../styles/Search.css';
+
+export default function SearchPage() {
+  const [keyword, setKeyword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [results, setResults] = useState<AttractionSummary[]>([]);
+
+  const handleBack = () => {
+    window.history.back();
+  };
+
+  const handleSearch = async () => {
+    if (keyword.trim() === '') return;
+
+    setLoading(true);
+    setResults([]);
+
+    try {
+        // TODO : lang id
+        const data = await fetchAttractionsByKeyword(1, keyword);
+        setResults(data);
+    } catch (error) {
+        console.error('API 호출 에러', error);
+    } finally {
+        setLoading(false);
+    }
+  };
+
+  return (
+    <PageContainer>
+      <SearchBar
+        value={keyword}
+        onChange={setKeyword}
+        onBack={handleBack}
+        onSearch={handleSearch}
+      />
+      {loading ? (
+        <LoadingSpinner />
+      ) : (
+        <div className="search-results">
+          {results.length > 0 ? (
+            results.map((item) => (
+              <SearchResultItem
+                key={item.id}
+                title={item.name}
+                address={item.address}
+                thumbnailImgUrl={item.thumbnailImgUrl}
+              />
+            ))
+          ) : (
+            keyword && <div className="empty-result">No results found.</div>
+          )}
+        </div>
+      )}
+    </PageContainer>
+  );
+}
