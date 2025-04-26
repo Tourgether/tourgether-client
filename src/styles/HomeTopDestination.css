@@ -5,8 +5,8 @@
 /* 상단 배너 */
 .home-banner {
   position: relative;
-  width: 100vw;
-  max-width: 100%;
+  width: calc(100% + 32px);
+  margin: -16px -16px 0 -16px;
   aspect-ratio: 390 / 484;
   overflow: hidden;
   border-bottom-left-radius: 30px;
@@ -41,13 +41,13 @@
 .city-slider {
   display: flex;
   overflow-x: auto;
+  overflow-y: hidden;
   gap: 20px;
-  padding: 16px 16px 0 16px;
-  margin-top: 8px;
-  margin-bottom: 40px;
+  padding: 0;
+  margin: 16px -16px -0px -16px;
   scrollbar-width: none;
+  height: 40px;
 }
-
 .city-slider::-webkit-scrollbar {
   display: none;
 }
@@ -85,14 +85,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 16px 10px 16px;
+  padding: 0 22px;
+  margin: 20px -16px 10px -16px;
 }
 
 .top-destination-title {
   font-size: 22px;
   font-weight: 700;
   background: linear-gradient(90deg, #6b7bff, #b226a8);
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;

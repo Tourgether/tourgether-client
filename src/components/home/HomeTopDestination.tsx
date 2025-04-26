@@ -30,12 +30,11 @@ function getCities(languageId: number): string[] {
 }
 
 export default function HomeTopDestination() {
-  const [selectedCity, setSelectedCity] = useState("서울시"); // TODO: languageId 변경
+  const [selectedCity, setSelectedCity] = useState("서울시");
   const [destinations, setDestinations] = useState<AttractionSummary[]>([]);
 
-  const languageId = 1; // 나중에 props나 글로벌 상태로 바꿀 수 있음
-
-  const cities = getCities(languageId); // languageId에 맞는 cities 가져오기
+  const languageId = 1;
+  const cities = getCities(languageId);
 
   useEffect(() => {
     async function fetchDestinations() {
@@ -53,24 +52,25 @@ export default function HomeTopDestination() {
   }, [selectedCity]);
 
   return (
-    <div className="home-wrapper">
-      {/* 도시 선택 */}
-      <div className="city-slider">
-        {cities.map((city) => (
-          <button
-            key={city}
-            className={`city-item ${selectedCity === city ? "selected" : ""}`}
-            onClick={() => setSelectedCity(city)}
-          >
-            {city}
-          </button>
-        ))}
+    <>
+      <div className="home-wrapper">
+        <div className="city-slider">
+          {cities.map((city) => (
+            <button
+              key={city}
+              className={`city-item ${selectedCity === city ? "selected" : ""}`}
+              onClick={() => setSelectedCity(city)}
+            >
+              {city}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Top Destination 제목 */}
-      <h2 className="top-destination-title">Top Destination</h2>
+      <div className="top-destination-header">
+        <h2 className="top-destination-title">Top Destination</h2>
+      </div>
 
-      {/* Top Destination 카드 리스트 */}
       <div className="destination-list">
         {destinations.map((destination) => (
           <div key={destination.id} className="destination-card">
@@ -86,6 +86,6 @@ export default function HomeTopDestination() {
           </div>
         ))}
       </div>
-    </div>
+    </>
   );
 }

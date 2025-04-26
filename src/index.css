@@ -23,7 +23,10 @@ body {
   max-width: 428px;
   min-height: 100vh;
   background: #ffffff;
-
+  padding: calc(16px + env(safe-area-inset-top, 0px))
+    calc(16px + env(safe-area-inset-right, 0px))
+    calc(16px + env(safe-area-inset-bottom, 0px))
+    calc(16px + env(safe-area-inset-left, 0px));
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
