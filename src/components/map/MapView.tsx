@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import MyLocationButton from './MyLocationButton';
-import {
-  fetchAttractionsWithinBounds,
-  AttractionMapSummary,
-} from '../../api/attractionApi';
+import AttractionBottomSheet from './AttractionBottomSheet';
+import { fetchAttractionsWithinBounds, AttractionMapSummary } from '../../api/attractionApi';
+import "../../styles/AttractionBottomSheet.css"; 
 
-/* ---------------- 하버사인 ---------------- */
+/* ---------------- 하버사인 거리 계산 ---------------- */
 const toRad = (deg: number) => (deg * Math.PI) / 180;
 const distanceMeters = (a: number, b: number, c: number, d: number) => {
   const R = 6371_000;
@@ -17,11 +16,11 @@ const distanceMeters = (a: number, b: number, c: number, d: number) => {
   return 2 * R * Math.asin(Math.sqrt(x));
 };
 
-/* ---------------- Coord → LatLng --------- */ // ✨
+/* ---------------- Coord → LatLng 변환 ---------------- */
 const coordToLatLng = (c: naver.maps.Coord): naver.maps.LatLng =>
   c instanceof naver.maps.LatLng ? c : new naver.maps.LatLng(c.y, c.x);
 
-/* ---------------- 줌별 임계값 ------------- */
+/* ---------------- 줌 별 이동 거리 임계값 ---------------- */
 const THRESHOLD_BY_ZOOM: Record<number, number> = {
   12: 1200,
   13: 800,
@@ -35,22 +34,18 @@ const THRESHOLD_BY_ZOOM: Record<number, number> = {
 };
 
 export default function MapView() {
-  /* -------- Refs -------- */
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<naver.maps.Map | null>(null);
   const myLocationMarkerRef = useRef<naver.maps.Marker | null>(null);
   const attractionMarkersRef = useRef<naver.maps.Marker[]>([]);
-  const lastCenterRef = useRef<naver.maps.Coord | null>(null);        // ✨
+  const lastCenterRef = useRef<naver.maps.Coord | null>(null);
   const lastZoomRef = useRef<number | null>(null);
   const watchIdRef = useRef<number | null>(null);
   const debounceTimerRef = useRef<number | undefined>(undefined);
 
-  /* -------- State -------- */
-  const [userLocation, setUserLocation] = useState<naver.maps.LatLng | null>(
-    null,
-  );
+  const [userLocation, setUserLocation] = useState<naver.maps.LatLng | null>(null);
+  const [selectedAttraction, setSelectedAttraction] = useState<AttractionMapSummary | null>(null);
 
-  /* -------- effect -------- */
   useEffect(() => {
     const scriptId = 'naver-map-sdk';
 
@@ -75,74 +70,69 @@ export default function MapView() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           ({ coords }) => {
-            const pos = new window.naver.maps.LatLng(
-              coords.latitude,
-              coords.longitude,
-            );
+            const pos = new window.naver.maps.LatLng(coords.latitude, coords.longitude);
             map.setCenter(pos);
             setUserLocation(pos);
             drawOrMoveMyLocationMarker(pos);
           },
           console.error,
-          { enableHighAccuracy: true, timeout: 8000 },
+          { enableHighAccuracy: true, timeout: 8000 }
         );
 
         watchIdRef.current = navigator.geolocation.watchPosition(
           ({ coords }) => {
-            const pos = new window.naver.maps.LatLng(
-              coords.latitude,
-              coords.longitude,
-            );
+            const pos = new window.naver.maps.LatLng(coords.latitude, coords.longitude);
             setUserLocation(pos);
             drawOrMoveMyLocationMarker(pos);
           },
           console.error,
-          { enableHighAccuracy: true, maximumAge: 5000, timeout: 15000 },
+          { enableHighAccuracy: true, maximumAge: 5000, timeout: 15000 }
         );
       }
     };
 
-    /* ----- idle handler ----- */
     const handleMapIdle = async () => {
       if (!mapRef.current) return;
 
       const map = mapRef.current;
       const zoom = map.getZoom();
-      const center = map.getCenter();           // Coord
-      const prev = lastCenterRef.current;       // Coord | null
+      const center = map.getCenter();
+      const prevCenter = lastCenterRef.current;
 
-      if (!prev) {
+      if (!prevCenter) {
         lastCenterRef.current = center;
         lastZoomRef.current = zoom;
       } else {
-        const curLL = coordToLatLng(center);    // ✨
-        const prevLL = coordToLatLng(prev);     // ✨
-        const moved = distanceMeters(
-          curLL.lat(), curLL.lng(), prevLL.lat(), prevLL.lng(),
-        );
-        const threshold =
-          THRESHOLD_BY_ZOOM[Math.round(zoom)] ?? 250;
-        if (zoom === lastZoomRef.current && moved < threshold) return;
+        const curLL = coordToLatLng(center);
+        const prevLL = coordToLatLng(prevCenter);
+        const moved = distanceMeters(curLL.lat(), curLL.lng(), prevLL.lat(), prevLL.lng());
+        const threshold = THRESHOLD_BY_ZOOM[Math.round(zoom)] ?? 250;
+
+        if (zoom === lastZoomRef.current && moved < threshold) {
+          // 📌 너무 조금 이동했으면 API 호출 생략
+          return;
+        }
 
         lastCenterRef.current = center;
         lastZoomRef.current = zoom;
       }
 
       try {
-        const b = map.getBounds() as naver.maps.LatLngBounds;
-        const sw = b.getSW();
-        const ne = b.getNE();
+        const bounds = map.getBounds();
+        if (!(bounds instanceof naver.maps.LatLngBounds)) return;
 
-        const list = await fetchAttractionsWithinBounds(
-          sw.lat(), sw.lng(), ne.lat(), ne.lng(),
+        const sw = bounds.getSW();
+        const ne = bounds.getNE();
+
+        const attractions = await fetchAttractionsWithinBounds(
+          sw.lat(), sw.lng(), ne.lat(), ne.lng()
         );
-        updateAttractionMarkers(list);
-      } catch (e) {
-        console.error('관광지 조회 실패', e);
+        updateAttractionMarkers(attractions);
+      } catch (error) {
+        console.error('관광지 조회 실패', error);
       }
     };
 
-    /* ----- 마커 그리기 ----- */
     const drawOrMoveMyLocationMarker = (p: naver.maps.LatLng) => {
       if (!mapRef.current) return;
       if (!myLocationMarkerRef.current) {
@@ -162,7 +152,7 @@ export default function MapView() {
     const updateAttractionMarkers = (arr: AttractionMapSummary[]) => {
       attractionMarkersRef.current.forEach((m) => m.setMap(null));
       attractionMarkersRef.current = arr.map((a) => {
-        return new window.naver.maps.Marker({
+        const marker = new window.naver.maps.Marker({
           position: new window.naver.maps.LatLng(a.latitude, a.longitude),
           map: mapRef.current!,
           icon: {
@@ -172,10 +162,20 @@ export default function MapView() {
             anchor: new window.naver.maps.Point(20, 40),
           },
         });
+
+        // 🔥 마커에 데이터 저장
+        marker.set('customData', a);
+
+        // 🔥 마커 클릭 시 BottomSheet 열기
+        window.naver.maps.Event.addListener(marker, 'click', () => {
+          const data = marker.get('customData') as AttractionMapSummary;
+          setSelectedAttraction(data);
+        });
+
+        return marker;
       });
     };
 
-    /* ----- 스크립트 로드 ----- */
     if (document.getElementById(scriptId)) {
       loadMap();
     } else {
@@ -189,12 +189,9 @@ export default function MapView() {
       document.head.appendChild(script);
     }
 
-    /* ----- cleanup ----- */
     return () => {
-      if (watchIdRef.current !== null)
-        navigator.geolocation.clearWatch(watchIdRef.current);
-      if (debounceTimerRef.current)
-        clearTimeout(debounceTimerRef.current);
+      if (watchIdRef.current !== null) navigator.geolocation.clearWatch(watchIdRef.current);
+      if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
       if (mapRef.current) {
         (mapRef.current as naver.maps.Map & { destroy?: () => void }).destroy?.();
         mapRef.current = null;
@@ -204,7 +201,6 @@ export default function MapView() {
     };
   }, []);
 
-  /* 내 위치 이동 */
   const moveToMyLocation = () => {
     if (mapRef.current && userLocation) {
       mapRef.current.setZoom(16);
@@ -212,11 +208,14 @@ export default function MapView() {
     }
   };
 
-  /* render */
   return (
     <div style={{ position: 'relative', width: '100%', height: 'calc(100vh - 58px)' }}>
       <div ref={mapContainerRef} style={{ width: '100%', height: '100%' }} />
       <MyLocationButton onClick={moveToMyLocation} />
+      <AttractionBottomSheet
+        attraction={selectedAttraction}
+        onClose={() => setSelectedAttraction(null)}
+      />
     </div>
   );
 }
