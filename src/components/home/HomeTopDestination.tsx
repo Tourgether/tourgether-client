@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import DestinationName from "../home/DestinationName";
 import "../../styles/HomeTopDestination.css";
 
 interface AttractionSummary {
@@ -139,7 +140,7 @@ export default function HomeTopDestination() {
               style={{ borderRadius: "30px" }}
             />
             <div className="destination-info">
-              <div className="destination-name">{destination.name}</div>
+              <DestinationName name={destination.name} />
             </div>
           </div>
         ))}
