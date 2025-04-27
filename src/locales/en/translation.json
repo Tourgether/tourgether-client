@@ -1,0 +1,18 @@
+{
+  "banner": {
+    "title": "Let’s, Tourgether!",
+    "description": "Explore the many attractions in Seoul!"
+  },
+  "home": {
+    "mostVisited": "Top Destination",
+    "nearby": "Nearby Attractions",
+    "cities": [
+      "Seoul",
+      "Central Area",
+      "Southwest Area",
+      "Northwest Area",
+      "Northeast Area",
+      "Southeast Area"
+    ]
+  }
+}

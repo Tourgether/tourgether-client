@@ -1,0 +1,11 @@
+{
+  "banner": {
+    "title": "Let’s, Tourgether!",
+    "description": "ソウルのさまざまな名所を探索しましょう！"
+  },
+  "home": {
+    "mostVisited": "最も訪問された名所",
+    "nearby": "近くの観光地",
+    "cities": ["ソウル市", "都心圏", "南西圏", "北西圏", "北東圏", "南東圏"]
+  }
+}

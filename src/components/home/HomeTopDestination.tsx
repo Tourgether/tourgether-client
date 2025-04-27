@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 import DestinationName from "../home/DestinationName";
 import "../../styles/HomeTopDestination.css";
@@ -17,21 +18,6 @@ interface FetchDestinationsParams {
   limit: number;
   area?: string;
 }
-
-// 언어별 cities 목록
-const citiesByLanguage: { [key: number]: string[] } = {
-  1: ["서울시", "도심권", "서남권", "서북권", "동북권", "동남권"],
-  2: [
-    "Seoul",
-    "Central Area",
-    "Southwest Area",
-    "Northwest Area",
-    "Northeast Area",
-    "Southeast Area",
-  ],
-  3: ["ソウル市", "都心圏", "南西圏", "北西圏", "北東圏", "南東圏"],
-  4: ["首尔市", "市中心区", "西南区", "西北区", "东北区", "东南区"],
-};
 
 // 도시 이름 → 서버 area 코드 매핑
 const cityToAreaMap: { [key: string]: string | null } = {
@@ -59,7 +45,7 @@ const cityToAreaMap: { [key: string]: string | null } = {
   北東圏: "NORTHEAST",
   南東圏: "SOUTHEAST",
 
-  // 중국어
+  // 중국어 간체
   首尔市: null,
   市中心区: "CENTRAL",
   西南区: "SOUTHWEST",
@@ -68,58 +54,66 @@ const cityToAreaMap: { [key: string]: string | null } = {
   东南区: "SOUTHEAST",
 };
 
-function getCities(languageId: number): string[] {
-  return citiesByLanguage[languageId] || citiesByLanguage[1];
-}
-
 export default function HomeTopDestination() {
-  const [selectedCity, setSelectedCity] = useState("서울시"); // 기본값 서울시
+  const { t } = useTranslation();
+  const [selectedCity, setSelectedCity] = useState("");
   const [destinations, setDestinations] = useState<AttractionSummary[]>([]);
   const [nearbyDestinations, setNearbyDestinations] = useState<
     AttractionSummary[]
   >([]);
   const navigate = useNavigate();
 
-  const languageId = 1; // TODO: 실제 로그인된 사용자 언어에 맞게 설정
-  const cities = getCities(languageId);
+  const languageId = 1; // TODO: 로그인 유저 기준으로 설정
+  const cities = t("home.cities", { returnObjects: true }) as string[];
 
-  async function fetchNearbyAttractions() {
+  useEffect(() => {
+    if (cities.length > 0 && !selectedCity) {
+      setSelectedCity(cities[0]);
+    }
+  }, [cities, selectedCity]);
+
+  const fetchNearbyAttractions = useCallback(async () => {
     try {
       const response = await axios.get(`/api/v1/attractions/nearby`, {
         params: {
-          latitude: 37.5665, // TODO: 서울시청으로 하드코딩
+          latitude: 37.5665,
           longitude: 126.978,
           radius: 5000,
-          languageId: languageId,
+          languageId,
         },
       });
       setNearbyDestinations(response.data.data);
     } catch (error) {
       console.error("Failed to fetch nearby attractions", error);
     }
-  }
+  }, [languageId]);
+
+  const fetchDestinations = useCallback(async () => {
+    try {
+      const params: FetchDestinationsParams = { languageId, limit: 10 };
+      const area = cityToAreaMap[selectedCity];
+      if (area) {
+        params.area = area;
+      }
+
+      const response = await axios.get(`/api/v1/attractions/popular`, {
+        params,
+      });
+      setDestinations(response.data.data);
+    } catch (error) {
+      console.error("Failed to fetch popular attractions", error);
+    }
+  }, [selectedCity, languageId]);
 
   useEffect(() => {
-    async function fetchDestinations() {
-      try {
-        const params: FetchDestinationsParams = { languageId, limit: 10 };
-        const area = cityToAreaMap[selectedCity];
-        if (area) {
-          params.area = area;
-        }
-
-        const response = await axios.get(`/api/v1/attractions/popular`, {
-          params,
-        });
-        setDestinations(response.data.data);
-      } catch (error) {
-        console.error("Failed to fetch popular attractions", error);
-      }
+    if (selectedCity) {
+      fetchDestinations();
     }
+  }, [selectedCity, fetchDestinations]);
 
-    fetchDestinations();
+  useEffect(() => {
     fetchNearbyAttractions();
-  }, [selectedCity, languageId]);
+  }, [fetchNearbyAttractions]);
 
   return (
     <>
@@ -138,7 +132,7 @@ export default function HomeTopDestination() {
       </div>
 
       <div className="home-header">
-        <h2 className="top-destination-title">Top Destination</h2>
+        <h2 className="top-destination-title">{t("home.mostVisited")}</h2>
       </div>
 
       <div className="destination-list">
@@ -167,7 +161,7 @@ export default function HomeTopDestination() {
       </div>
 
       <div className="home-header">
-        <h2 className="top-destination-title">Nearby Attractions</h2>
+        <h2 className="top-destination-title">{t("home.nearby")}</h2>
       </div>
 
       <div className="destination-list">
