@@ -3,6 +3,7 @@ import Home from "../pages/Home";
 import Map from "../pages/Map";
 import MyPage from "../pages/MyPage";
 import SearchPage from "../pages/SearchPage";
+import AttractionDetailPage from "../pages/AttractionDetailPage";
 import MainTab from "../components/common/MainTab";
 
 export default function AppRouter() {
@@ -13,6 +14,7 @@ export default function AppRouter() {
         <Route path="/map" element={<Map />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/search" element={<SearchPage />} />
+        <Route path="/attraction/:id" element={<AttractionDetailPage />} />
         <Route path="*" element={<Home />} />
       </Routes>
       <MainTab />
