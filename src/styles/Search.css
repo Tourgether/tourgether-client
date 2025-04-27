@@ -56,7 +56,7 @@
 .search-result-icon {
   font-size: 24px;
   color: var(--color-primary);
-  background: linear-gradient(to right, #6B7BFF, #B226A8);
+  background: linear-gradient(to right, #6b7bff, #b226a8);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -95,4 +95,23 @@
   text-align: center;
   color: #888888;
   font-size: 14px;
+}
+
+/* 버튼: 흰색 원 */
+.search-icon-button {
+  width: 37px;
+  height: 37px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.search-icon-inside {
+  font-size: 18px;
+  color: var(--color-primary);
 }
