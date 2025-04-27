@@ -80,8 +80,8 @@
   border-radius: 2px;
 }
 
-/* Top Destination 제목 + 추가버튼 */
-.top-destination-header {
+/* 제목*/
+.home-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
