@@ -1,4 +1,4 @@
-import { FiCrosshair } from 'react-icons/fi';   // 심플한 “현재 위치” 아이콘
+import { FiCrosshair } from 'react-icons/fi';
 
 interface MyLocationButtonProps {
   onClick: () => void;
