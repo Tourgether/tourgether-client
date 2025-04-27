@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import MainLayout from '../components/common/MainLayout'; // ✅ 추가
+import MainLayout from '../components/common/MainLayout';
 import Home from '../pages/Home';
 import Map from '../pages/Map';
 import MyPage from '../pages/MyPage';
