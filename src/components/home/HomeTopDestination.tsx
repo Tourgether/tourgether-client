@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import DestinationName from "../home/DestinationName";
 import "../../styles/HomeTopDestination.css";
 
 interface AttractionSummary {
@@ -74,10 +75,29 @@ function getCities(languageId: number): string[] {
 export default function HomeTopDestination() {
   const [selectedCity, setSelectedCity] = useState("서울시"); // 기본값 서울시
   const [destinations, setDestinations] = useState<AttractionSummary[]>([]);
+  const [nearbyDestinations, setNearbyDestinations] = useState<
+    AttractionSummary[]
+  >([]);
   const navigate = useNavigate();
 
   const languageId = 1; // TODO: 실제 로그인된 사용자 언어에 맞게 설정
   const cities = getCities(languageId);
+
+  async function fetchNearbyAttractions() {
+    try {
+      const response = await axios.get(`/api/v1/attractions/nearby`, {
+        params: {
+          latitude: 37.5665, // TODO: 서울시청으로 하드코딩
+          longitude: 126.978,
+          radius: 5000,
+          languageId: languageId,
+        },
+      });
+      setNearbyDestinations(response.data.data);
+    } catch (error) {
+      console.error("Failed to fetch nearby attractions", error);
+    }
+  }
 
   useEffect(() => {
     async function fetchDestinations() {
@@ -98,6 +118,7 @@ export default function HomeTopDestination() {
     }
 
     fetchDestinations();
+    fetchNearbyAttractions();
   }, [selectedCity, languageId]);
 
   return (
@@ -116,7 +137,7 @@ export default function HomeTopDestination() {
         </div>
       </div>
 
-      <div className="top-destination-header">
+      <div className="home-header">
         <h2 className="top-destination-title">Top Destination</h2>
       </div>
 
@@ -139,7 +160,36 @@ export default function HomeTopDestination() {
               style={{ borderRadius: "30px" }}
             />
             <div className="destination-info">
-              <div className="destination-name">{destination.name}</div>
+              <DestinationName name={destination.name} />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="home-header">
+        <h2 className="top-destination-title">Nearby Attractions</h2>
+      </div>
+
+      <div className="destination-list">
+        {nearbyDestinations.map((destination) => (
+          <div
+            key={destination.id}
+            className="destination-card"
+            onClick={() =>
+              navigate(`/attraction/${destination.id}`, {
+                state: { thumbnailImgUrl: destination.thumbnailImgUrl },
+              })
+            }
+            style={{ cursor: "pointer" }}
+          >
+            <img
+              src={destination.thumbnailImgUrl}
+              alt={destination.name}
+              className="destination-image"
+              style={{ borderRadius: "30px" }}
+            />
+            <div className="destination-info">
+              <DestinationName name={destination.name} />
             </div>
           </div>
         ))}
