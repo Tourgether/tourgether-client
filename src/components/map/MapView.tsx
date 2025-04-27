@@ -109,7 +109,7 @@ export default function MapView() {
         const threshold = THRESHOLD_BY_ZOOM[Math.round(zoom)] ?? 250;
 
         if (zoom === lastZoomRef.current && moved < threshold) {
-          // 📌 너무 조금 이동했으면 API 호출 생략
+          // 너무 조금 이동했으면 API 호출 생략
           return;
         }
 
@@ -163,10 +163,9 @@ export default function MapView() {
           },
         });
 
-        // 🔥 마커에 데이터 저장
         marker.set('customData', a);
 
-        // 🔥 마커 클릭 시 BottomSheet 열기
+        // 마커 클릭 시 BottomSheet 열기
         window.naver.maps.Event.addListener(marker, 'click', () => {
           const data = marker.get('customData') as AttractionMapSummary;
           setSelectedAttraction(data);

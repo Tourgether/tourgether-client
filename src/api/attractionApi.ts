@@ -35,7 +35,7 @@ export interface AttractionMapSummary {
     swLng: number,
     neLat: number,
     neLng: number,
-    languageId: number = 1
+    languageId: number = 1  // TODO: langid check
   ): Promise<AttractionMapSummary[]> => {
     const response = await axios.get('/api/v1/attractions/bounds', {
       params: { swLat, swLng, neLat, neLng, languageId },
