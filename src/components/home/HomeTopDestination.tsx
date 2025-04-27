@@ -30,7 +30,7 @@ const citiesByLanguage: { [key: number]: string[] } = {
     "Southeast Area",
   ],
   3: ["ソウル市", "都心圏", "南西圏", "北西圏", "北東圏", "南東圏"],
-  4: ["首尔市", "市中心区", "西南区", "西北区", "东北区", "东南区"],
+  4: ["首尔市", "市中心区", "西南区", "西北区", "东北区", "东南区"], // zh-CN 간체
 };
 
 // 도시 이름 → 서버 area 코드 매핑
@@ -59,13 +59,27 @@ const cityToAreaMap: { [key: string]: string | null } = {
   北東圏: "NORTHEAST",
   南東圏: "SOUTHEAST",
 
-  // 중국어
+  // 중국어 간체 (zh-CN)
   首尔市: null,
   市中心区: "CENTRAL",
   西南区: "SOUTHWEST",
   西北区: "NORTHWEST",
   东北区: "NORTHEAST",
   东南区: "SOUTHEAST",
+};
+
+const mostVisitedTitleByLanguage: { [key: number]: string } = {
+  1: "가장 많이 방문한 명소", // 한국어
+  2: "Top Destination", // 영어
+  3: "最も訪問された名所", // 일본어
+  4: "最受欢迎的景点", // 중국어 간체 (zh-CN)
+};
+
+const nearbyTitleByLanguage: { [key: number]: string } = {
+  1: "근처 추천 명소", // 한국어
+  2: "Nearby Attractions", // 영어
+  3: "近くの観光地", // 일본어
+  4: "附近景点推荐", // 중국어 간체
 };
 
 function getCities(languageId: number): string[] {
@@ -138,7 +152,9 @@ export default function HomeTopDestination() {
       </div>
 
       <div className="home-header">
-        <h2 className="top-destination-title">Top Destination</h2>
+        <h2 className="top-destination-title">
+          {mostVisitedTitleByLanguage[languageId] || "Top Destination"}
+        </h2>
       </div>
 
       <div className="destination-list">
@@ -167,7 +183,9 @@ export default function HomeTopDestination() {
       </div>
 
       <div className="home-header">
-        <h2 className="top-destination-title">Nearby Attractions</h2>
+        <h2 className="top-destination-title">
+          {nearbyTitleByLanguage[languageId] || "Nearby Attractions"}
+        </h2>
       </div>
 
       <div className="destination-list">
