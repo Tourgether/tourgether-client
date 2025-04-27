@@ -1,0 +1,130 @@
+/* Attraction 상세 페이지 */
+.attraction-page {
+  width: 100%;
+  max-width: 428px;
+  margin: 0 auto;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.attraction-image-container {
+  position: relative;
+  width: 100%;
+  height: 550px;
+  overflow: hidden;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  box-shadow: 0px 10px 12px rgba(0, 0, 0, 0.15);
+}
+
+.attraction-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.attraction-name-address {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  color: white;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.attraction-name {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: -4px;
+  color: white;
+  text-shadow: 0 0 1px #000, 0 0 2px #000;
+}
+
+.attraction-address {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 400;
+  color: white;
+  text-shadow: 0 0 1px #000, 0 0 2px #000;
+  gap: 3px;
+  margin-top: 8px;
+}
+
+.address-icon {
+  color: white;
+  font-size: 14px;
+  filter: drop-shadow(0 0 1px black);
+}
+
+.attraction-info {
+  padding: 0px 32px 24px 32px;
+}
+
+.attraction-open-section {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: -10px;
+}
+
+.attraction-open-section h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  background: linear-gradient(90deg, #6b7bff 0%, #b226a8 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.attraction-open {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+  font-size: 15px;
+  color: #333;
+}
+
+.attraction-description {
+  display: flex;
+  flex-direction: column;
+}
+
+.attraction-description h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 0px;
+  background: linear-gradient(90deg, #6b7bff 0%, #b226a8 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.attraction-description p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #555;
+}
+
+.back-button {
+  position: absolute;
+  top: 50px;
+  left: 36px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.8);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.back-icon {
+  color: black;
+  font-size: 18px;
+}

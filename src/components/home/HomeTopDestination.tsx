@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../styles/HomeTopDestination.css";
 
@@ -32,6 +33,7 @@ function getCities(languageId: number): string[] {
 export default function HomeTopDestination() {
   const [selectedCity, setSelectedCity] = useState("서울시");
   const [destinations, setDestinations] = useState<AttractionSummary[]>([]);
+  const navigate = useNavigate();
 
   const languageId = 1;
   const cities = getCities(languageId);
@@ -73,7 +75,18 @@ export default function HomeTopDestination() {
 
       <div className="destination-list">
         {destinations.map((destination) => (
-          <div key={destination.id} className="destination-card">
+          <div
+            key={destination.id}
+            className="destination-card"
+            onClick={() =>
+              navigate(`/attraction/${destination.id}`, {
+                state: {
+                  thumbnailImgUrl: destination.thumbnailImgUrl,
+                },
+              })
+            }
+            style={{ cursor: "pointer" }}
+          >
             <img
               src={destination.thumbnailImgUrl}
               alt={destination.name}
