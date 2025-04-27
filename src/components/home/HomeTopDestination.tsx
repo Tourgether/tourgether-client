@@ -73,20 +73,34 @@ export default function HomeTopDestination() {
   }, [cities, selectedCity]);
 
   const fetchNearbyAttractions = useCallback(async () => {
-    try {
-      const response = await axios.get(`/api/v1/attractions/nearby`, {
-        params: {
-          latitude: 37.5665,
-          longitude: 126.978,
-          radius: 5000,
-          languageId,
-        },
-      });
-      setNearbyDestinations(response.data.data);
-    } catch (error) {
-      console.error("Failed to fetch nearby attractions", error);
+    if (!navigator.geolocation) {
+      console.error("Geolocation을 지원하지 않습니다.");
+      return;
     }
-  }, [languageId]);
+
+    navigator.geolocation.getCurrentPosition(
+      async ({ coords }) => {
+        try {
+          const { data } = await axios.get("/api/v1/attractions/nearby", {
+            params: {
+              latitude: coords.latitude,
+              longitude: coords.longitude,
+              radius: 5000,
+              languageId,
+            },
+          });
+          setNearbyDestinations(data.data);
+        } catch (error) {
+          console.error("근처 관광지 조회 실패", error);
+        }
+      },
+      (error) => {
+        console.error("현재 위치 조회 실패", error);
+      },
+      { enableHighAccuracy: true, timeout: 8000 }
+    );
+  }, []);
+
 
   const fetchDestinations = useCallback(async () => {
     try {
@@ -131,62 +145,68 @@ export default function HomeTopDestination() {
         </div>
       </div>
 
+      {/* 인기 관광지 */}
       <div className="home-header">
         <h2 className="top-destination-title">{t("home.mostVisited")}</h2>
       </div>
 
       <div className="destination-list">
-        {destinations.map((destination) => (
-          <div
-            key={destination.id}
-            className="destination-card"
-            onClick={() =>
-              navigate(`/attraction/${destination.id}`, {
+        {destinations.length > 0 ? (
+          destinations.map((destination) => (
+            <div
+              key={destination.id}
+              className="destination-card"
+              onClick={() => navigate(`/attraction/${destination.id}`, {
                 state: { thumbnailImgUrl: destination.thumbnailImgUrl },
-              })
-            }
-            style={{ cursor: "pointer" }}
-          >
-            <img
-              src={destination.thumbnailImgUrl}
-              alt={destination.name}
-              className="destination-image"
-              style={{ borderRadius: "30px" }}
-            />
-            <div className="destination-info">
-              <DestinationName name={destination.name} />
+              })}
+              style={{ cursor: "pointer" }}
+            >
+              <img
+                src={destination.thumbnailImgUrl}
+                alt={destination.name}
+                className="destination-image"
+                style={{ borderRadius: "30px" }}
+              />
+              <div className="destination-info">
+                <DestinationName name={destination.name} />
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <div className="empty-message">조회된 인기 여행지가 없습니다.</div>
+        )}
       </div>
 
+      {/* 주변 관광지 */}
       <div className="home-header">
         <h2 className="top-destination-title">{t("home.nearby")}</h2>
       </div>
 
       <div className="destination-list">
-        {nearbyDestinations.map((destination) => (
-          <div
-            key={destination.id}
-            className="destination-card"
-            onClick={() =>
-              navigate(`/attraction/${destination.id}`, {
+        {nearbyDestinations.length > 0 ? (
+          nearbyDestinations.map((destination) => (
+            <div
+              key={destination.id}
+              className="destination-card"
+              onClick={() => navigate(`/attraction/${destination.id}`, {
                 state: { thumbnailImgUrl: destination.thumbnailImgUrl },
-              })
-            }
-            style={{ cursor: "pointer" }}
-          >
-            <img
-              src={destination.thumbnailImgUrl}
-              alt={destination.name}
-              className="destination-image"
-              style={{ borderRadius: "30px" }}
-            />
-            <div className="destination-info">
-              <DestinationName name={destination.name} />
+              })}
+              style={{ cursor: "pointer" }}
+            >
+              <img
+                src={destination.thumbnailImgUrl}
+                alt={destination.name}
+                className="destination-image"
+                style={{ borderRadius: "30px" }}
+              />
+              <div className="destination-info">
+                <DestinationName name={destination.name} />
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <div className="empty-message">근처에 등록된 관광지가 없습니다.</div>
+        )}
       </div>
     </>
   );
