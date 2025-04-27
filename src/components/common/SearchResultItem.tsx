@@ -1,15 +1,27 @@
-import { AiOutlineEnvironment } from 'react-icons/ai';
-import '../../styles/Search.css';
+import { AiOutlineEnvironment } from "react-icons/ai";
+import "../../styles/Search.css";
 
 interface SearchResultItemProps {
-    title: string;
-    address: string;
-    thumbnailImgUrl: string;
-  }
+  id: number;
+  title: string;
+  address: string;
+  thumbnailImgUrl: string;
+  onClick: (id: number, thumbnailImgUrl: string) => void;
+}
 
-export default function SearchResultItem({ title, address, thumbnailImgUrl }: SearchResultItemProps) {
+export default function SearchResultItem({
+  id,
+  title,
+  address,
+  thumbnailImgUrl,
+  onClick,
+}: SearchResultItemProps) {
   return (
-    <div className="search-result-item">
+    <div
+      className="search-result-item"
+      onClick={() => onClick(id, thumbnailImgUrl)}
+      style={{ cursor: "pointer" }}
+    >
       <div className="search-result-left">
         <AiOutlineEnvironment className="search-result-icon" />
         <div className="search-result-text">
