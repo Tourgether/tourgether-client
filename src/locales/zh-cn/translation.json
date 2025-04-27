@@ -1,0 +1,11 @@
+{
+  "banner": {
+    "title": "Let’s, Tourgether!",
+    "description": "探索首尔的众多景点！"
+  },
+  "home": {
+    "mostVisited": "最受欢迎的景点",
+    "nearby": "附近景点推荐",
+    "cities": ["首尔市", "市中心区", "西南区", "西北区", "东北区", "东南区"]
+  }
+}

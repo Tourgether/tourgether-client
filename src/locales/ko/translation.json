@@ -1,0 +1,11 @@
+{
+  "banner": {
+    "title": "Let’s, Tourgether!",
+    "description": "서울의 다양한 명소를 탐험해보세요!"
+  },
+  "home": {
+    "mostVisited": "가장 많이 방문한 명소",
+    "nearby": "근처 추천 명소",
+    "cities": ["서울시", "도심권", "서남권", "서북권", "동북권", "동남권"]
+  }
+}
