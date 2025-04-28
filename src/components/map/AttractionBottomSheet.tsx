@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { AiOutlineEnvironment } from "react-icons/ai";
 import "../../styles/AttractionBottomSheet.css";
 import { AttractionMapSummary } from "../../api/attractionApi";
@@ -11,10 +12,21 @@ export default function AttractionBottomSheet({
   attraction,
   onClose,
 }: AttractionBottomSheetProps) {
+  const navigate = useNavigate();
+
   if (!attraction) return null;
 
+  const handleClickDetail = () => {
+    navigate(`/attraction/${attraction.id}`, {
+      state: {
+        thumbnailImgUrl: attraction.thumbnailImgUrl,
+        attraction: attraction, // ✅ 전체 attraction 넘기기
+      },
+    });
+  };
+
   return (
-    <div className="bottom-sheet">
+    <div className="bottom-sheet" onClick={handleClickDetail}>
       <div className="bottom-sheet-content">
         <div className="info-section">
           <AiOutlineEnvironment className="location-icon" />
@@ -29,7 +41,15 @@ export default function AttractionBottomSheet({
           className="thumbnail-img"
         />
       </div>
-      <button className="close-btn" onClick={onClose}>✕</button>
+      <button
+        className="close-btn"
+        onClick={(e) => {
+          e.stopPropagation();
+          onClose();
+        }}
+      >
+        ✕
+      </button>
     </div>
   );
 }
