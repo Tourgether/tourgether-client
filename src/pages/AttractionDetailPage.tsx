@@ -20,7 +20,20 @@ interface AttractionDetail {
 
 export default function AttractionDetailPage() {
   const { id } = useParams<{ id: string }>();
-  const { state } = useLocation() as { state: { thumbnailImgUrl: string } };
+  const { state } = useLocation() as {
+    state: {
+      thumbnailImgUrl: string;
+      from?: string;
+      attraction?: {
+        id: number;
+        name: string;
+        address: string;
+        thumbnailImgUrl: string;
+        latitude: number;
+        longitude: number;
+      };
+    };
+  };
   const navigate = useNavigate();
   const [detail, setDetail] = useState<AttractionDetail | null>(null);
 
@@ -44,9 +57,21 @@ export default function AttractionDetailPage() {
   return (
     <div className="attraction-page">
       <div className="attraction-image-container">
-        <button className="back-button" onClick={() => navigate(-1)}>
+        <button
+          className="back-button"
+          onClick={() => {
+            if (state?.from === "/map") {
+              navigate("/map", {
+                state: { selectedAttraction: state.attraction },
+              });
+            } else {
+              navigate("/home");
+            }
+          }}
+        >
           <FaArrowLeft className="back-icon" />
         </button>
+
         <img
           src={state?.thumbnailImgUrl || "/assets/home-seoul-night.png"}
           alt={detail.name}

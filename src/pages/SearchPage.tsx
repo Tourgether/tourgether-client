@@ -36,10 +36,15 @@ export default function SearchPage() {
     }
   };
 
-  const handleItemClick = (id: number, thumbnailImgUrl: string) => {
+  const handleItemClick = (
+    id: number,
+    thumbnailImgUrl: string,
+    from: string
+  ) => {
     navigate(`/attraction/${id}`, {
       state: {
-        thumbnailImgUrl: thumbnailImgUrl,
+        thumbnailImgUrl,
+        from,
       },
     });
   };
