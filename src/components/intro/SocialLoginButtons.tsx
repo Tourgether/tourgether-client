@@ -19,7 +19,7 @@ export default function SocialLoginButtons({ show }: SocialLoginButtonsProps) {
       />
       <SocialLoginButton
         provider="google"
-        label="Login with Google"
+        label="Sign in with Google"
         logo="/assets/social/logo-google.svg"
       />
     </div>
