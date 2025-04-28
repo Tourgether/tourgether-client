@@ -20,7 +20,8 @@ export default function AttractionBottomSheet({
     navigate(`/attraction/${attraction.id}`, {
       state: {
         thumbnailImgUrl: attraction.thumbnailImgUrl,
-        attraction: attraction, // ✅ 전체 attraction 넘기기
+        attraction: attraction,
+        from: "/map",
       },
     });
   };
