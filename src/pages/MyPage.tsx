@@ -4,7 +4,7 @@ import MenuCard from "../components/mypage/MenuCard";
 
 export default function MyPage() {
   return (
-    <PageContainer className="my-page">
+    <PageContainer>
       <ProfileHeader />
       <MenuCard />
     </PageContainer>

@@ -1,0 +1,56 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
+import styles from "../styles/mypage/VisitHistory.module.css";
+import PageContainer from "../components/common/PageContainer";
+
+interface Visit {
+  id: number;
+  name: string;
+  address: string;
+  thumbnailImgUrl: string;
+  visitedAt: string;
+}
+
+export default function VisitHistoryPage() {
+  const [visits, setVisits] = useState<Visit[]>([]);
+
+  useEffect(() => {
+    axios
+      .get("/api/v1/visits")
+      .then((res) => {
+        setVisits(res.data.data.content);
+      })
+      .catch(console.error);
+  }, []);
+
+  return (
+    <PageContainer>
+      <div className={styles.page}>
+        <div className={styles.section}>
+          <h2 className={styles.title}>Visit History</h2>
+          <div className={styles.divider} />
+        </div>
+        <div className={styles.list}>
+          {visits.map((visit) => (
+            <div key={visit.id} className={styles.card}>
+              <div className={styles.cardContent}>
+                <div className={styles.textArea}>
+                  <div className={styles.name}>{visit.name}</div>
+                  <div className={styles.address}>{visit.address}</div>
+                  <div className={styles.date}>
+                    {visit.visitedAt.replace("T", " ").slice(0, 16)}
+                  </div>
+                </div>
+                <img
+                  src={visit.thumbnailImgUrl}
+                  alt="thumbnail"
+                  className={styles.thumbnail}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </PageContainer>
+  );
+}

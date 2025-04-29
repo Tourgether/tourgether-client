@@ -1,10 +1,13 @@
 .cardContainer {
   width: 309px;
-  margin: 0 auto 0 auto; /* 가운데 정렬 */
+  margin: 160px auto 0 auto;
+  margin-top: 250px;
   background: white;
   border-radius: 30px;
   box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.12);
-  padding: 8px 0; /* 상하 padding */
+  padding: 8px 0;
+  position: relative;
+  z-index: 2; /* 배경 위로 올라오도록 */
 }
 
 .menuItem {
