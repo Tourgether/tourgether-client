@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FaArrowLeft } from "react-icons/fa";
 import axios from "axios";
 import styles from "../styles/mypage/VisitHistory.module.css";
+import backButtonStyles from "../styles/common/BackButton.module.css";
 import PageContainer from "../components/common/PageContainer";
 
 interface Visit {
@@ -35,6 +37,15 @@ export default function VisitHistoryPage() {
   return (
     <PageContainer>
       <div className={styles.page}>
+        <div className={backButtonStyles.buttonRow}>
+          <button
+            className={backButtonStyles.backButton}
+            onClick={() => navigate(-1)}
+          >
+            <FaArrowLeft className={backButtonStyles.backIcon} />
+          </button>
+        </div>
+
         <div className={styles.section}>
           <h2 className={styles.title}>Visit History</h2>
           <div className={styles.divider} />
