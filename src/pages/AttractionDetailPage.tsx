@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
-import { FaMapMarkerAlt, FaArrowLeft } from "react-icons/fa";
+import {
+  FaMapMarkerAlt,
+  FaArrowLeft,
+  FaHeart,
+  FaRegHeart,
+} from "react-icons/fa";
 import axios from "axios";
 import "../styles/AttractionDetail.css";
 
@@ -36,6 +41,18 @@ export default function AttractionDetailPage() {
   };
   const navigate = useNavigate();
   const [detail, setDetail] = useState<AttractionDetail | null>(null);
+  const [isLiked, setIsLiked] = useState<boolean | null>(null);
+
+  const toggleLike = async () => {
+    try {
+      const response = await axios.post(
+        `/api/v1/attractions/${id}/like/toggle`
+      );
+      setIsLiked(response.data.data); // true or false
+    } catch (error) {
+      console.error("Failed to toggle like", error);
+    }
+  };
 
   useEffect(() => {
     async function fetchDetail() {
@@ -50,25 +67,48 @@ export default function AttractionDetailPage() {
     fetchDetail();
   }, [id]);
 
+  useEffect(() => {
+    async function fetchIsLiked() {
+      try {
+        const response = await axios.get(`/api/v1/attractions/${id}/like`);
+        setIsLiked(response.data.data);
+      } catch (error) {
+        console.error("Failed to fetch like status", error);
+      }
+    }
+
+    fetchIsLiked();
+  }, [id]);
+
   if (!detail) return null;
 
   return (
     <div className="attraction-page">
       <div className="attraction-image-container">
-        <button
-          className="back-button"
-          onClick={() => {
-            if (state?.from === "/map") {
-              navigate("/map", {
-                state: { selectedAttraction: state.attraction },
-              });
-            } else {
-              navigate("/home");
-            }
-          }}
-        >
-          <FaArrowLeft className="back-icon" />
-        </button>
+        <div className="button-row">
+          <button
+            className="back-button"
+            onClick={() => {
+              if (state?.from === "/map") {
+                navigate("/map", {
+                  state: { selectedAttraction: state.attraction },
+                });
+              } else {
+                navigate("/home");
+              }
+            }}
+          >
+            <FaArrowLeft className="back-icon" />
+          </button>
+
+          <button className="like-button" onClick={toggleLike}>
+            {isLiked ? (
+              <FaHeart className="heart-icon filled" />
+            ) : (
+              <FaRegHeart className="heart-icon" />
+            )}
+          </button>
+        </div>
 
         <img
           src={state?.thumbnailImgUrl || "/assets/home-seoul-night.png"}

@@ -118,10 +118,17 @@
   color: #555;
 }
 
-.back-button {
+.button-row {
   position: absolute;
   top: 50px;
-  left: 36px;
+  left: 32px;
+  right: 32px;
+  display: flex;
+  justify-content: space-between;
+  z-index: 10;
+}
+
+.back-button {
   width: 34px;
   height: 34px;
   border-radius: 50%;
@@ -131,10 +138,30 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 10;
 }
 
 .back-icon {
   color: black;
   font-size: 18px;
+}
+
+.like-button {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.8);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.heart-icon {
+  color: #555;
+  font-size: 18px;
+}
+
+.heart-icon.filled {
+  color: #e74c3c;
 }
