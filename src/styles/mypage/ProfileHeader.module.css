@@ -1,0 +1,38 @@
+.headerContainer {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 70px;
+  background: url("/assets/home-seoul-night.png") center/cover no-repeat;
+  overflow: visible;
+  margin-bottom: 230px;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+}
+
+.profileImage {
+  position: absolute;
+  top: 192px;
+  width: 134px;
+  height: 134px;
+  border-radius: 50%;
+  border: 4px solid white;
+  object-fit: cover;
+  background: white;
+  z-index: 2;
+}
+
+.userName {
+  position: absolute;
+  top: 330px; /* profileImage top(262px) + height(134px) + 여백 */
+  width: 100%;
+  text-align: center;
+  font-size: 22px;
+  font-weight: bold;
+  color: #000;
+  z-index: 2;
+}

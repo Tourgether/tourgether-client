@@ -154,9 +154,8 @@
 }
 
 .empty-message {
-    text-align: center;
-    color: #888;
-    font-size: 16px;
-    padding: 40px 20px;
-  }
-  
+  text-align: center;
+  color: #888;
+  font-size: 16px;
+  padding: 40px 20px;
+}
