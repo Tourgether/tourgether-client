@@ -60,3 +60,56 @@
   color: #888;
   cursor: pointer;
 }
+
+.image-bottom-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px;
+}
+
+.overlay-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: #fff;
+  z-index: 100;
+}
+
+.overlay-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.overlay-address {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #ddd;
+}
+
+.address-icon {
+  margin-right: 6px;
+}
+
+.go-button {
+  background: linear-gradient(135deg, #5B44E8, #C32BAD);
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  border: none;
+  border-radius: 999px;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+}
