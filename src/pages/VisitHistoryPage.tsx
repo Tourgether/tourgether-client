@@ -5,6 +5,8 @@ import PageContainer from "../components/common/PageContainer";
 
 interface Visit {
   id: number;
+  attractionId: number;
+  translationId: number;
   name: string;
   address: string;
   thumbnailImgUrl: string;

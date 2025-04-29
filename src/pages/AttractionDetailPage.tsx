@@ -10,6 +10,8 @@ import axios from "axios";
 import "../styles/AttractionDetail.css";
 
 interface AttractionDetail {
+  translationId: number;
+  attractionId: number;
   id: number;
   name: string;
   address: string;
@@ -45,10 +47,12 @@ export default function AttractionDetailPage() {
 
   const toggleLike = async () => {
     try {
+      if (!detail?.attractionId) return;
+
       const response = await axios.post(
-        `/api/v1/attractions/${id}/like/toggle`
+        `/api/v1/attractions/${detail.attractionId}/like/toggle`
       );
-      setIsLiked(response.data.data); // true or false
+      setIsLiked(response.data.data);
     } catch (error) {
       console.error("Failed to toggle like", error);
     }
@@ -70,7 +74,11 @@ export default function AttractionDetailPage() {
   useEffect(() => {
     async function fetchIsLiked() {
       try {
-        const response = await axios.get(`/api/v1/attractions/${id}/like`);
+        if (!detail?.attractionId) return;
+
+        const response = await axios.get(
+          `/api/v1/attractions/${detail.attractionId}/like`
+        );
         setIsLiked(response.data.data);
       } catch (error) {
         console.error("Failed to fetch like status", error);
@@ -78,7 +86,7 @@ export default function AttractionDetailPage() {
     }
 
     fetchIsLiked();
-  }, [id]);
+  }, [detail?.attractionId]);
 
   if (!detail) return null;
 
