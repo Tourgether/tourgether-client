@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styles from "../styles/mypage/VisitHistory.module.css";
 import PageContainer from "../components/common/PageContainer";
@@ -15,6 +16,12 @@ interface Visit {
 
 export default function VisitHistoryPage() {
   const [visits, setVisits] = useState<Visit[]>([]);
+
+  const navigate = useNavigate();
+
+  const handleClick = (translationId: number) => {
+    navigate(`/attraction/${translationId}`);
+  };
 
   useEffect(() => {
     axios
@@ -34,7 +41,11 @@ export default function VisitHistoryPage() {
         </div>
         <div className={styles.list}>
           {visits.map((visit) => (
-            <div key={visit.id} className={styles.card}>
+            <div
+              key={visit.id}
+              className={styles.card}
+              onClick={() => handleClick(visit.translationId)}
+            >
               <div className={styles.cardContent}>
                 <div className={styles.textArea}>
                   <div className={styles.name}>{visit.name}</div>

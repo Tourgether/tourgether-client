@@ -12,6 +12,7 @@ import "../styles/AttractionDetail.css";
 interface AttractionDetail {
   translationId: number;
   attractionId: number;
+  thumbnailImgUrl: string;
   id: number;
   name: string;
   address: string;
@@ -119,7 +120,11 @@ export default function AttractionDetailPage() {
         </div>
 
         <img
-          src={state?.thumbnailImgUrl || "/assets/home-seoul-night.png"}
+          src={
+            state?.thumbnailImgUrl ||
+            detail.thumbnailImgUrl ||
+            "/assets/home-seoul-night.png"
+          }
           alt={detail.name}
           className="attraction-image"
         />
