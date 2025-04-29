@@ -50,9 +50,7 @@ export default function AttractionDetailPage() {
     fetchDetail();
   }, [id]);
 
-  if (!detail) {
-    return null;
-  }
+  if (!detail) return null;
 
   return (
     <div className="attraction-page">
@@ -77,12 +75,32 @@ export default function AttractionDetailPage() {
           alt={detail.name}
           className="attraction-image"
         />
-        <div className="attraction-name-address">
-          <h2 className="attraction-name">{detail.name}</h2>
-          <div className="attraction-address">
-            <FaMapMarkerAlt className="address-icon" />
-            <span>{detail.address}</span>
+
+        <div className="image-bottom-overlay">
+          <div className="overlay-left">
+            <h2 className="overlay-title">{detail.name}</h2>
+            <div className="overlay-address">
+              <FaMapMarkerAlt className="address-icon" />
+              <span>{detail.address}</span>
+            </div>
           </div>
+
+          <button
+            className="go-button"
+            onClick={() =>
+              navigate("/route", {
+                state: {
+                  destination: {
+                    name: detail.name,
+                    lat: detail.latitude,
+                    lng: detail.longitude,
+                  },
+                },
+              })
+            }
+          >
+            GO!
+          </button>
         </div>
       </div>
 
