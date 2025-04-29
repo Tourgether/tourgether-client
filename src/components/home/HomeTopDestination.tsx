@@ -101,7 +101,6 @@ export default function HomeTopDestination() {
     );
   }, []);
 
-
   const fetchDestinations = useCallback(async () => {
     try {
       const params: FetchDestinationsParams = { languageId, limit: 10 };
@@ -156,9 +155,11 @@ export default function HomeTopDestination() {
             <div
               key={destination.id}
               className="destination-card"
-              onClick={() => navigate(`/attraction/${destination.id}`, {
-                state: { thumbnailImgUrl: destination.thumbnailImgUrl },
-              })}
+              onClick={() =>
+                navigate(`/attraction/${destination.id}`, {
+                  state: { thumbnailImgUrl: destination.thumbnailImgUrl },
+                })
+              }
               style={{ cursor: "pointer" }}
             >
               <img
@@ -188,9 +189,14 @@ export default function HomeTopDestination() {
             <div
               key={destination.id}
               className="destination-card"
-              onClick={() => navigate(`/attraction/${destination.id}`, {
-                state: { thumbnailImgUrl: destination.thumbnailImgUrl },
-              })}
+              onClick={() =>
+                navigate(`/attraction/${destination.id}`, {
+                  state: {
+                    thumbnailImgUrl: destination.thumbnailImgUrl,
+                    from: "/home",
+                  },
+                })
+              }
               style={{ cursor: "pointer" }}
             >
               <img

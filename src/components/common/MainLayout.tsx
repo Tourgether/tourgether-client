@@ -5,8 +5,7 @@ import "../../styles/MainLayout.css";
 export default function MainLayout() {
   const location = useLocation();
 
-  // MainTab 제외 경로
-  const excludePaths = ["/", "/intro"];
+  const excludePaths = ["/", "/intro", "/route", "/route-detail"];
   const showMainTab = !excludePaths.includes(location.pathname);
 
   return (

@@ -6,7 +6,7 @@ interface SearchResultItemProps {
   title: string;
   address: string;
   thumbnailImgUrl: string;
-  onClick: (id: number, thumbnailImgUrl: string) => void;
+  onClick: (id: number, thumbnailImgUrl: string, from: string) => void;
 }
 
 export default function SearchResultItem({
@@ -19,7 +19,7 @@ export default function SearchResultItem({
   return (
     <div
       className="search-result-item"
-      onClick={() => onClick(id, thumbnailImgUrl)}
+      onClick={() => onClick(id, thumbnailImgUrl, "/search")}
       style={{ cursor: "pointer" }}
     >
       <div className="search-result-left">
