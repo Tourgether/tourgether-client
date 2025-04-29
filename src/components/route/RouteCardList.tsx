@@ -1,16 +1,17 @@
-// src/components/route/RouteCardList.tsx
 import { RouteCard } from "./RouteCard";
 import { Route } from "../../types/route";
 
 interface RouteCardListProps {
   routes: Route[];
+  start: { lat: number; lng: number };
+  end: { lat: number; lng: number };
 }
 
-export function RouteCardList({ routes }: RouteCardListProps) {
+export function RouteCardList({ routes, start, end }: RouteCardListProps) {
   return (
     <div>
       {routes.map((route, index) => (
-        <RouteCard key={index} route={route} />
+        <RouteCard key={index} route={route} start={start} end={end} />
       ))}
     </div>
   );

@@ -21,11 +21,11 @@ export default function RoutePage() {
 
   const [routes, setRoutes] = useState<Route[]>([]);
   const [activeTab, setActiveTab] = useState<TabType>("All");
+  const [start, setStart] = useState<{ lat: number; lng: number } | null>(null);
 
   useEffect(() => {
     if (!destination) return;
 
-    // 현재 위치 받아오기
     navigator.geolocation.getCurrentPosition(
       async () => {
         // TODO: 고정좌표 -> 실제좌표로
@@ -33,10 +33,12 @@ export default function RoutePage() {
         // const startY = pos.coords.latitude;
         const startX = 126.970833;
         const startY = 37.554722;
+
         const endX = destination.lng;
         const endY = destination.lat;
 
         const fetchedRoutes = await fetchRoutes(startX, startY, endX, endY);
+        setStart({ lat: startY, lng: startX });
         setRoutes(fetchedRoutes);
       },
       (err) => {
@@ -64,7 +66,14 @@ export default function RoutePage() {
         destination={destination?.name || "Unknown Destination"}
       />
       <RouteFilterTabs activeTab={activeTab} setActiveTab={setActiveTab} />
-      <RouteCardList routes={filteredRoutes} />
+
+      {start && destination && (
+        <RouteCardList
+          routes={filteredRoutes}
+          start={start}
+          end={{ lat: destination.lat, lng: destination.lng }}
+        />
+      )}
     </PageContainer>
   );
 }

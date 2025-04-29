@@ -5,7 +5,13 @@ import { FaBus, FaSubway } from "react-icons/fa";
 import { busRouteTypeColorMap, subwayRouteTypeColorMap } from "./RouteColors";
 import { useNavigate } from "react-router-dom";
 
-export function RouteCard({ route }: { route: Route }) {
+interface RouteCardProps {
+  route: Route;
+  start: { lat: number; lng: number };
+  end: { lat: number; lng: number };
+}
+
+export function RouteCard({ route, start, end }: RouteCardProps) {
   const { totalTime, payment: rawPayment } = route.info;
   const payment = rawPayment ?? 0;
   const navigate = useNavigate();
@@ -21,25 +27,24 @@ export function RouteCard({ route }: { route: Route }) {
     if (trafficType === 2 && busType !== undefined) {
       return busRouteTypeColorMap[busType] || "#FFA500";
     }
-    return "#A0A4A8"; // 기본 걷기 색
+    return "#A0A4A8";
   };
 
   const handleGoClick = () => {
-    navigate("/route-detail", { state: { route } });
+    navigate("/route-detail", {
+      state: { route, start, end }
+    });
   };
 
   return (
     <div className="route-card">
-      {/* 상단: 총 소요시간 & 요금 */}
       <div className="route-header">
         <span className="route-time">{totalTime}분</span>
         <span className="route-cost">{payment.toLocaleString()}₩</span>
       </div>
 
-      {/* 구간별 Progress Bar */}
       <RouteProgressBar subPaths={route.subPath} />
 
-      {/* 노선 탑승/하차 정보 */}
       <div style={{ marginTop: "10px", display: "flex", flexDirection: "column", gap: "10px" }}>
         {route.subPath
           .filter((s) => s.trafficType !== 3)
@@ -57,41 +62,18 @@ export function RouteCard({ route }: { route: Route }) {
 
             return (
               <div key={idx}>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "6px",
-                    fontWeight: "bold",
-                    fontSize: "13px",
-                    marginBottom: "4px",
-                  }}
-                >
+                <div style={{ display: "flex", alignItems: "center", gap: "6px", fontWeight: "bold", fontSize: "13px", marginBottom: "4px" }}>
                   {icon}
                   <span>{label}</span>
                 </div>
-
                 <ul style={{ paddingLeft: "30px", margin: 0 }}>
                   {s.startName && (
-                    <li
-                      style={{
-                        fontSize: "13px",
-                        color: "#666",
-                        marginBottom: "5px",
-                        listStyleType: "disc",
-                      }}
-                    >
+                    <li style={{ fontSize: "13px", color: "#666", marginBottom: "5px", listStyleType: "disc" }}>
                       {s.startName} (탑승)
                     </li>
                   )}
                   {s.endName && (
-                    <li
-                      style={{
-                        fontSize: "13px",
-                        color: "#666",
-                        listStyleType: "disc",
-                      }}
-                    >
+                    <li style={{ fontSize: "13px", color: "#666", listStyleType: "disc" }}>
                       {s.endName} (하차)
                     </li>
                   )}
@@ -101,7 +83,6 @@ export function RouteCard({ route }: { route: Route }) {
           })}
       </div>
 
-      {/* GO 버튼 */}
       <div style={{ marginTop: "16px", textAlign: "center" }}>
         <button
           onClick={handleGoClick}
