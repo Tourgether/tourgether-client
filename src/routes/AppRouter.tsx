@@ -5,6 +5,7 @@ import Map from "../pages/Map";
 import MyPage from "../pages/MyPage";
 import SearchPage from "../pages/SearchPage";
 import AttractionDetailPage from "../pages/AttractionDetailPage";
+import RoutePage from "../pages/RoutePage";
 
 export default function AppRouter() {
   return (
@@ -16,6 +17,7 @@ export default function AppRouter() {
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/attraction/:id" element={<AttractionDetailPage />} />
+            <Route path="/route" element={<RoutePage />} />
         <Route path="*" element={<Home />} />
         </Route>
       </Routes>

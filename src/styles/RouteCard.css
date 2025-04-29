@@ -1,0 +1,29 @@
+.route-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  padding: 16px 20px;
+  margin: 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.route-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.route-time {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111;
+}
+
+.route-cost {
+  font-size: 16px;
+  font-weight: 500;
+  color: #666;
+}
+
