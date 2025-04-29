@@ -15,6 +15,8 @@ interface RoutePolylineMapViewProps {
 export default function RoutePolylineMapView({ sections, start, end }: RoutePolylineMapViewProps) {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<naver.maps.Map | null>(null);
+  const myLocationMarkerRef = useRef<naver.maps.Marker | null>(null);
+  const watchIdRef = useRef<number | null>(null);
 
   useEffect(() => {
     const scriptId = "naver-map-sdk";
@@ -53,6 +55,30 @@ export default function RoutePolylineMapView({ sections, start, end }: RoutePoly
         },
       });
 
+      // 내 위치 실시간 추적 마커
+      if (navigator.geolocation) {
+        watchIdRef.current = navigator.geolocation.watchPosition(
+          (pos) => {
+            const current = new naver.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+
+            if (!myLocationMarkerRef.current) {
+              myLocationMarkerRef.current = new naver.maps.Marker({
+                position: current,
+                map,
+                icon: {
+                  content: `<div style="width:16px;height:16px;background:#4285F4;border:2px solid white;border-radius:50%;box-shadow:0 0 6px rgba(66,133,244,0.6);"></div>`,
+                  anchor: new naver.maps.Point(8, 8),
+                },
+              });
+            } else {
+              myLocationMarkerRef.current.setPosition(current);
+            }
+          },
+          console.error,
+          { enableHighAccuracy: true, timeout: 10000 }
+        );
+      }
+
       // 폴리라인
       sections.forEach((section) => {
         const path = section.graphPos.map((p) => new naver.maps.LatLng(p.y, p.x));
@@ -79,8 +105,13 @@ export default function RoutePolylineMapView({ sections, start, end }: RoutePoly
     }
 
     return () => {
+      // 정리
+      if (watchIdRef.current !== null) {
+        navigator.geolocation.clearWatch(watchIdRef.current);
+      }
       mapInstanceRef.current?.destroy?.();
       mapInstanceRef.current = null;
+      myLocationMarkerRef.current = null;
     };
   }, [sections, start, end]);
 
