@@ -1,10 +1,18 @@
 import { useEffect, useState } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
-import { FaMapMarkerAlt, FaArrowLeft } from "react-icons/fa";
+import {
+  FaMapMarkerAlt,
+  FaArrowLeft,
+  FaHeart,
+  FaRegHeart,
+} from "react-icons/fa";
 import axios from "axios";
 import "../styles/AttractionDetail.css";
 
 interface AttractionDetail {
+  translationId: number;
+  attractionId: number;
+  thumbnailImgUrl: string;
   id: number;
   name: string;
   address: string;
@@ -36,6 +44,20 @@ export default function AttractionDetailPage() {
   };
   const navigate = useNavigate();
   const [detail, setDetail] = useState<AttractionDetail | null>(null);
+  const [isLiked, setIsLiked] = useState<boolean | null>(null);
+
+  const toggleLike = async () => {
+    try {
+      if (!detail?.attractionId) return;
+
+      const response = await axios.post(
+        `/api/v1/attractions/${detail.attractionId}/like/toggle`
+      );
+      setIsLiked(response.data.data);
+    } catch (error) {
+      console.error("Failed to toggle like", error);
+    }
+  };
 
   useEffect(() => {
     async function fetchDetail() {
@@ -50,28 +72,59 @@ export default function AttractionDetailPage() {
     fetchDetail();
   }, [id]);
 
+  useEffect(() => {
+    async function fetchIsLiked() {
+      try {
+        if (!detail?.attractionId) return;
+
+        const response = await axios.get(
+          `/api/v1/attractions/${detail.attractionId}/like`
+        );
+        setIsLiked(response.data.data);
+      } catch (error) {
+        console.error("Failed to fetch like status", error);
+      }
+    }
+
+    fetchIsLiked();
+  }, [detail?.attractionId]);
+
   if (!detail) return null;
 
   return (
     <div className="attraction-page">
       <div className="attraction-image-container">
-        <button
-          className="back-button"
-          onClick={() => {
-            if (state?.from === "/map") {
-              navigate("/map", {
-                state: { selectedAttraction: state.attraction },
-              });
-            } else {
-              navigate("/home");
-            }
-          }}
-        >
-          <FaArrowLeft className="back-icon" />
-        </button>
+        <div className="button-row">
+          <button
+            className="back-button"
+            onClick={() => {
+              if (state?.from === "/map") {
+                navigate("/map", {
+                  state: { selectedAttraction: state.attraction },
+                });
+              } else {
+                navigate("/home");
+              }
+            }}
+          >
+            <FaArrowLeft className="back-icon" />
+          </button>
+
+          <button className="like-button" onClick={toggleLike}>
+            {isLiked ? (
+              <FaHeart className="heart-icon filled" />
+            ) : (
+              <FaRegHeart className="heart-icon" />
+            )}
+          </button>
+        </div>
 
         <img
-          src={state?.thumbnailImgUrl || "/assets/home-seoul-night.png"}
+          src={
+            state?.thumbnailImgUrl ||
+            detail.thumbnailImgUrl ||
+            "/assets/home-seoul-night.png"
+          }
           alt={detail.name}
           className="attraction-image"
         />

@@ -7,6 +7,7 @@ import SearchPage from "../pages/SearchPage";
 import AttractionDetailPage from "../pages/AttractionDetailPage";
 import RoutePage from "../pages/RoutePage";
 import RouteDetailPage from "../pages/RouteDetailPage";
+import LikedPage from "../pages/LikedPage";
 import VisitHistoryPage from "../pages/VisitHistoryPage";
 
 export default function AppRouter() {
@@ -14,15 +15,16 @@ export default function AppRouter() {
     <Router>
       <Routes>
         <Route element={<MainLayout />}>
-            <Route path="/home" element={<Home />} />
-            <Route path="/map" element={<Map />} />
-            <Route path="/mypage" element={<MyPage />} />
-            <Route path="/search" element={<SearchPage />} />
-            <Route path="/attraction/:id" element={<AttractionDetailPage />} />
-            <Route path="/route" element={<RoutePage />} />
-            <Route path="/route-detail" element={<RouteDetailPage />} />
-            <Route path="/mypage/visits" element={<VisitHistoryPage />} />
-        <Route path="*" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/map" element={<Map />} />
+          <Route path="/mypage" element={<MyPage />} />
+          <Route path="/search" element={<SearchPage />} />
+          <Route path="/attraction/:id" element={<AttractionDetailPage />} />
+          <Route path="/route" element={<RoutePage />} />
+          <Route path="/route-detail" element={<RouteDetailPage />} />
+          <Route path="/mypage/liked" element={<LikedPage />} />
+          <Route path="/mypage/visits" element={<VisitHistoryPage />} />
+          <Route path="*" element={<Home />} />
         </Route>
       </Routes>
     </Router>

@@ -1,5 +1,6 @@
 .page {
-  padding: 48px 16px 12px;
+  position: relative;
+  padding: 68px 16px 12px;
   min-height: 100vh;
   box-sizing: border-box;
 }

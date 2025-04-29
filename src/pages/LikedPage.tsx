@@ -6,19 +6,17 @@ import styles from "../styles/mypage/VisitHistory.module.css";
 import backButtonStyles from "../styles/common/BackButton.module.css";
 import PageContainer from "../components/common/PageContainer";
 
-interface Visit {
+interface LikedAttraction {
   id: number;
   attractionId: number;
   translationId: number;
   name: string;
   address: string;
   thumbnailImgUrl: string;
-  visitedAt: string;
 }
 
-export default function VisitHistoryPage() {
-  const [visits, setVisits] = useState<Visit[]>([]);
-
+export default function LikedPage() {
+  const [likes, setLikes] = useState<LikedAttraction[]>([]);
   const navigate = useNavigate();
 
   const handleClick = (translationId: number) => {
@@ -27,9 +25,9 @@ export default function VisitHistoryPage() {
 
   useEffect(() => {
     axios
-      .get("/api/v1/visits")
+      .get("/api/v1/attractions/likes/me")
       .then((res) => {
-        setVisits(res.data.data.content);
+        setLikes(res.data.data);
       })
       .catch(console.error);
   }, []);
@@ -47,26 +45,23 @@ export default function VisitHistoryPage() {
         </div>
 
         <div className={styles.section}>
-          <h2 className={styles.title}>Visit History</h2>
+          <h2 className={styles.title}>Liked Attractions</h2>
           <div className={styles.divider} />
         </div>
         <div className={styles.list}>
-          {visits.map((visit) => (
+          {likes.map((like) => (
             <div
-              key={visit.id}
+              key={like.id}
               className={styles.card}
-              onClick={() => handleClick(visit.translationId)}
+              onClick={() => handleClick(like.translationId)}
             >
               <div className={styles.cardContent}>
                 <div className={styles.textArea}>
-                  <div className={styles.name}>{visit.name}</div>
-                  <div className={styles.address}>{visit.address}</div>
-                  <div className={styles.date}>
-                    {visit.visitedAt.replace("T", " ").slice(0, 16)}
-                  </div>
+                  <div className={styles.name}>{like.name}</div>
+                  <div className={styles.address}>{like.address}</div>
                 </div>
                 <img
-                  src={visit.thumbnailImgUrl}
+                  src={like.thumbnailImgUrl}
                   alt="thumbnail"
                   className={styles.thumbnail}
                 />
