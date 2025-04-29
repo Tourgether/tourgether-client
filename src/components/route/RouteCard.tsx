@@ -3,9 +3,11 @@ import "../../styles/RouteCard.css";
 import { RouteProgressBar } from "./RouteProgressBar";
 import { FaBus, FaSubway } from "react-icons/fa";
 import { busRouteTypeColorMap, subwayRouteTypeColorMap } from "./RouteColors";
+import { useNavigate } from "react-router-dom";
 
 export function RouteCard({ route }: { route: Route }) {
   const { totalTime, payment } = route.info;
+  const navigate = useNavigate();
 
   const getColor = (
     trafficType: number,
@@ -18,7 +20,11 @@ export function RouteCard({ route }: { route: Route }) {
     if (trafficType === 2 && busType !== undefined) {
       return busRouteTypeColorMap[busType] || "#FFA500";
     }
-    return "#A0A4A8";
+    return "#A0A4A8"; // 기본 걷기 색
+  };
+
+  const handleGoClick = () => {
+    navigate("/route-detail", { state: { route } });
   };
 
   return (
@@ -97,6 +103,7 @@ export function RouteCard({ route }: { route: Route }) {
       {/* GO 버튼 */}
       <div style={{ marginTop: "16px", textAlign: "center" }}>
         <button
+          onClick={handleGoClick}
           style={{
             background: "linear-gradient(to right, #5B44E8, #C32BAD)",
             color: "#fff",
