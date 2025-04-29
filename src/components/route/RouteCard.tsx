@@ -6,7 +6,8 @@ import { busRouteTypeColorMap, subwayRouteTypeColorMap } from "./RouteColors";
 import { useNavigate } from "react-router-dom";
 
 export function RouteCard({ route }: { route: Route }) {
-  const { totalTime, payment } = route.info;
+  const { totalTime, payment: rawPayment } = route.info;
+  const payment = rawPayment ?? 0;
   const navigate = useNavigate();
 
   const getColor = (
