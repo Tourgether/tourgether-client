@@ -1,0 +1,107 @@
+.intro-layout {
+  width: 100%;
+  min-height: 100vh;
+  max-width: 428px;
+  background: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.intro-background {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+  background-image: url("/assets/home-seoul-night.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 20% center;
+  will-change: background-position;
+  animation: moveBackground 10s ease-out forwards;
+}
+
+@keyframes moveBackground {
+  from {
+    background-position: 20% center;
+  }
+  to {
+    background-position: 50% center;
+  }
+}
+
+.intro-logo-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60%;
+  z-index: 1;
+}
+
+.intro-logo {
+  min-width: 225px;
+  min-height: 40px;
+}
+
+.intro-button-wrapper {
+  position: absolute;
+  bottom: 50px;
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 0 15px;
+  box-sizing: border-box;
+
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* showButtons=true일 때 */
+.intro-button-wrapper.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.intro-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 15px;
+  font-size: 18px;
+
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+}
+
+.intro-button-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.social-logo {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  left: 35px;
+}
+
+.kakao {
+  background-color: #fee500;
+}
+
+.naver {
+  background-color: #03c75a;
+  color: white;
+}
+
+.google {
+  background-color: white;
+  color: black;
+  border: 1px solid #ddd;
+}

@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainLayout from "../components/common/MainLayout";
+import Intro from "../pages/Intro";
+import NaverCallback from "../pages/NaverCallback";
 import Home from "../pages/Home";
 import Map from "../pages/Map";
 import MyPage from "../pages/MyPage";
@@ -16,6 +18,9 @@ export default function AppRouter() {
     <Router>
       <Routes>
         <Route element={<MainLayout />}>
+          <Route path="/" element={<Intro />} />
+          <Route path="/oauth/callback/naver" element={<NaverCallback />} />
+          <Route path="/intro" element={<Intro />} />
           <Route path="/home" element={<Home />} />
           <Route path="/map" element={<Map />} />
           <Route path="/mypage" element={<MyPage />} />
