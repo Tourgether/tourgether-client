@@ -6,8 +6,16 @@ export default function MenuCard() {
   const navigate = useNavigate();
 
   const menuList = [
-    { icon: <Globe size={24} strokeWidth={1.5} />, label: "Language" },
-    { icon: <Heart size={24} strokeWidth={1.5} />, label: "Liked" },
+    {
+      icon: <Globe size={24} strokeWidth={1.5} />,
+      label: "Language",
+      onClick: () => navigate("/mypage/language"),
+    },
+    {
+      icon: <Heart size={24} strokeWidth={1.5} />,
+      label: "Liked",
+      onClick: () => navigate("/mypage/liked"),
+    },
     {
       icon: <Copy size={24} strokeWidth={1.5} />,
       label: "Visit History",

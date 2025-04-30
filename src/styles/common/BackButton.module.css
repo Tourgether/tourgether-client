@@ -1,0 +1,27 @@
+.buttonRow {
+  position: absolute;
+  top: 24px; /* 기존 50px → 24px 정도로 내려서 겹침 방지 */
+  left: 8px;
+  z-index: 10;
+}
+
+.backButton {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.8);
+  border: none;
+  outline: none;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.backIcon {
+  color: black;
+  font-size: 18px;
+}
