@@ -12,6 +12,7 @@ interface LocationState {
     name: string;
     lat: number;
     lng: number;
+    id: string;
   };
 }
 
@@ -73,6 +74,7 @@ export default function RoutePage() {
           start={start}
           end={{ lat: destination.lat, lng: destination.lng }}
           destName={destination.name}
+          id={destination.id}
         />
       )}
     </PageContainer>
