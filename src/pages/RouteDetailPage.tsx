@@ -6,6 +6,7 @@ import { ColoredPolylineSection } from "../types/routeDetail";
 import RoutePolylineMapView from "../components/route/RoutePolylineMapView";
 import { convertToColoredSections } from "../utils/convertToColoredSections";
 import { FaArrowLeft } from "react-icons/fa";
+import RouteDetailBottomSheet from "../components/route/RouteDetailBottomSheet";
 
 interface Coord {
   lat: number;
@@ -18,12 +19,14 @@ export default function RouteDetailPage() {
       route: Route;
       start: Coord;
       end: Coord;
+      destName: string;
     };
   };
   const navigate = useNavigate();
   const mapObj = location.state?.route.info.mapObj;
   const start = location.state?.start;
   const end = location.state?.end;
+  const destName = location.state?.destName;
 
   const [sections, setSections] = useState<ColoredPolylineSection[]>([]);
 
@@ -38,7 +41,7 @@ export default function RouteDetailPage() {
 
   return (
     <div style={{ width: "100%", height: "100vh", position: "relative" }}>
-      {/* 🗺️ 지도 */}
+      {/* 지도 */}
       <RoutePolylineMapView sections={sections} start={start} end={end} />
 
       {/* 🔙 뒤로가기 버튼 */}
@@ -61,6 +64,9 @@ export default function RouteDetailPage() {
       >
         <FaArrowLeft size={16} color="#333" />
       </button>
+
+      {/* 바텀시트 */}
+      <RouteDetailBottomSheet route={location.state.route} startLabel="My Location" destLabel={destName}/>
     </div>
   );
 }

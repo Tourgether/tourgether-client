@@ -72,6 +72,7 @@ export default function RoutePage() {
           routes={filteredRoutes}
           start={start}
           end={{ lat: destination.lat, lng: destination.lng }}
+          destName={destination.name}
         />
       )}
     </PageContainer>
