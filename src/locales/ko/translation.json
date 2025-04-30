@@ -1,4 +1,11 @@
 {
+  "language": {
+    "ko": "한국어 (Korean)",
+    "en": "English",
+    "ja": "日本語 (Japanese)",
+    "zh-CN": "繁體中文 (Traditional Chinese)"
+  },
+
   "banner": {
     "title": "Let’s, Tourgether!",
     "description": "서울의 다양한 명소를 탐험해보세요!"
