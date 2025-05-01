@@ -15,6 +15,20 @@ interface RoutePolylineMapViewProps {
 export default function RoutePolylineMapView({ sections, start, end }: RoutePolylineMapViewProps) {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<naver.maps.Map | null>(null);
+  const myLocationMarkerRef = useRef<naver.maps.Marker | null>(null);
+  const watchIdRef = useRef<number | null>(null);
+
+  // naver.maps가 완전히 로드될 때까지 기다리는 유틸 함수
+  const waitForNaverMaps = (callback: () => void) => {
+    const check = () => {
+      if (window.naver && window.naver.maps) {
+        callback();
+      } else {
+        setTimeout(check, 100);
+      }
+    };
+    check();
+  };
 
   useEffect(() => {
     const scriptId = "naver-map-sdk";
@@ -53,6 +67,33 @@ export default function RoutePolylineMapView({ sections, start, end }: RoutePoly
         },
       });
 
+      // 내 위치 실시간 추적 마커
+      if (navigator.geolocation) {
+        watchIdRef.current = navigator.geolocation.watchPosition(
+          (pos) => {
+            const current = new naver.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+
+            if (!myLocationMarkerRef.current) {
+              myLocationMarkerRef.current = new naver.maps.Marker({
+                position: current,
+                map,
+                icon: {
+                  content: `<div style="width:16px;height:16px;background:#4285F4;border:2px solid white;border-radius:50%;box-shadow:0 0 6px rgba(66,133,244,0.6);"></div>`,
+                  anchor: new naver.maps.Point(8, 8),
+                },
+              });
+            } else {
+              myLocationMarkerRef.current.setPosition(current);
+            }
+          },
+          console.error,
+          { enableHighAccuracy: false,
+            timeout: 5000,
+            maximumAge: 10_000
+          }
+        );
+      }
+
       // 폴리라인
       sections.forEach((section) => {
         const path = section.graphPos.map((p) => new naver.maps.LatLng(p.y, p.x));
@@ -67,20 +108,24 @@ export default function RoutePolylineMapView({ sections, start, end }: RoutePoly
     };
 
     if (document.getElementById(scriptId)) {
-      loadMap();
+      waitForNaverMaps(loadMap);
     } else {
       const script = document.createElement("script");
       script.id = scriptId;
-      // TODO : language
       script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${import.meta.env.VITE_NAVER_MAP_CLIENT_ID}&language=en`;
       script.async = true;
-      script.onload = loadMap;
+      script.onload = () => waitForNaverMaps(loadMap);
       document.head.appendChild(script);
     }
 
     return () => {
+      // 정리
+      if (watchIdRef.current !== null) {
+        navigator.geolocation.clearWatch(watchIdRef.current);
+      }
       mapInstanceRef.current?.destroy?.();
       mapInstanceRef.current = null;
+      myLocationMarkerRef.current = null;
     };
   }, [sections, start, end]);
 

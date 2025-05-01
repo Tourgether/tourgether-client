@@ -8,7 +8,6 @@ import {
 } from "../../api/attractionApi";
 import "../../styles/AttractionBottomSheet.css";
 
-/* ---------------- 하버사인 거리 계산 ---------------- */
 const toRad = (deg: number) => (deg * Math.PI) / 180;
 const distanceMeters = (a: number, b: number, c: number, d: number) => {
   const R = 6371_000;
@@ -20,11 +19,9 @@ const distanceMeters = (a: number, b: number, c: number, d: number) => {
   return 2 * R * Math.asin(Math.sqrt(x));
 };
 
-/* ---------------- Coord → LatLng 변환 ---------------- */
 const coordToLatLng = (c: naver.maps.Coord): naver.maps.LatLng =>
   c instanceof naver.maps.LatLng ? c : new naver.maps.LatLng(c.y, c.x);
 
-/* ---------------- 줌 별 이동 거리 임계값 ---------------- */
 const THRESHOLD_BY_ZOOM: Record<number, number> = {
   12: 1200,
   13: 800,
@@ -51,11 +48,21 @@ export default function MapView() {
   const watchIdRef = useRef<number | null>(null);
   const debounceTimerRef = useRef<number | undefined>(undefined);
 
-  const [userLocation, setUserLocation] = useState<naver.maps.LatLng | null>(
-    null
-  );
-  const [selectedAttraction, setSelectedAttraction] =
-    useState<AttractionMapSummary | null>(null);
+  const [userLocation, setUserLocation] = useState<naver.maps.LatLng | null>(null);
+  const [selectedAttraction, setSelectedAttraction] = useState<AttractionMapSummary | null>(null);
+
+  const waitForNaverMaps = (callback: () => void) => {
+    let executed = false;
+    const check = () => {
+      if (window.naver && window.naver.maps && !executed) {
+        executed = true;
+        callback();
+      } else {
+        setTimeout(check, 100);
+      }
+    };
+    check();
+  };
 
   const handleMapIdle = useCallback(async () => {
     if (!mapRef.current) return;
@@ -79,10 +86,7 @@ export default function MapView() {
       );
       const threshold = THRESHOLD_BY_ZOOM[Math.round(zoom)] ?? 250;
 
-      if (zoom === lastZoomRef.current && moved < threshold) {
-        // 너무 조금 이동했으면 API 호출 생략
-        return;
-      }
+      if (zoom === lastZoomRef.current && moved < threshold) return;
 
       lastCenterRef.current = center;
       lastZoomRef.current = zoom;
@@ -123,7 +127,6 @@ export default function MapView() {
 
       marker.set("customData", a);
 
-      // 마커 클릭 시 BottomSheet 열기
       window.naver.maps.Event.addListener(marker, "click", () => {
         const data = marker.get("customData") as AttractionMapSummary;
         setSelectedAttraction(data);
@@ -140,7 +143,7 @@ export default function MapView() {
         position: pos,
         map: mapRef.current,
         icon: {
-          content: `<div style="width:14px;height:14px;background:#4285F4;border:2px solid #fff;border-radius:50%;box-shadow:0 0 6px rgba(66,133,244,.6);"></div>`,
+          content: `<div style="z-index:9999;width:14px;height:14px;background:#4285F4;border:2px solid #fff;border-radius:50%;box-shadow:0 0 6px rgba(66,133,244,.6);"></div>`,
           anchor: new window.naver.maps.Point(7, 7),
         },
       });
@@ -149,66 +152,80 @@ export default function MapView() {
     }
   };
 
+  const initializeMap = () => {
+    if (mapRef.current || !mapContainerRef.current || !window.naver) return;
+
+    const fallback = new window.naver.maps.LatLng(37.5665, 126.978); // 서울시청
+    const map = new window.naver.maps.Map(mapContainerRef.current, {
+      center: fallback,
+      zoom: 14,
+      minZoom: 12,
+      maxZoom: 20,
+    });
+
+    mapRef.current = map;
+
+    map.addListener("idle", () => {
+      if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
+      debounceTimerRef.current = window.setTimeout(handleMapIdle, 500);
+    });
+  };
+
+  const startGeolocation = () => {
+    if (!navigator.geolocation) return;
+
+    navigator.geolocation.getCurrentPosition(
+      ({ coords }) => {
+        const pos = new window.naver.maps.LatLng(coords.latitude, coords.longitude);
+        setUserLocation(pos);
+        drawOrMoveMyLocationMarker(pos);
+        mapRef.current?.setCenter(pos); // 지도 중심 이동
+      },
+      (err) => {
+        console.warn("❗ 위치 실패:", err);
+      },
+      {
+        enableHighAccuracy: false,
+        timeout: 5000,
+        maximumAge: 10_000
+      }
+    );
+
+    watchIdRef.current = navigator.geolocation.watchPosition(
+      ({ coords }) => {
+        const pos = new window.naver.maps.LatLng(coords.latitude, coords.longitude);
+        setUserLocation(pos);
+        drawOrMoveMyLocationMarker(pos);
+      },
+      (err) => {
+        console.warn("📡 위치 추적 실패", err);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 5000,
+      }
+    );
+  };
+
   useEffect(() => {
     const scriptId = "naver-map-sdk";
 
-    const loadMap = () => {
-      if (!mapContainerRef.current || !window.naver) return;
-
-      const map = new window.naver.maps.Map(mapContainerRef.current, {
-        center: new window.naver.maps.LatLng(37.5665, 126.978),
-        zoom: 14,
-        minZoom: 12,
-        maxZoom: 20,
-      });
-      mapRef.current = map;
-
-      map.addListener("idle", () => {
-        if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
-        debounceTimerRef.current = window.setTimeout(handleMapIdle, 500);
-      });
-
-      /* 내 위치 */
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          ({ coords }) => {
-            const pos = new window.naver.maps.LatLng(
-              coords.latitude,
-              coords.longitude
-            );
-            map.setCenter(pos);
-            setUserLocation(pos);
-            drawOrMoveMyLocationMarker(pos);
-          },
-          console.error,
-          { enableHighAccuracy: true, timeout: 8000 }
-        );
-
-        watchIdRef.current = navigator.geolocation.watchPosition(
-          ({ coords }) => {
-            const pos = new window.naver.maps.LatLng(
-              coords.latitude,
-              coords.longitude
-            );
-            setUserLocation(pos);
-            drawOrMoveMyLocationMarker(pos);
-          },
-          console.error,
-          { enableHighAccuracy: true, maximumAge: 5000, timeout: 15000 }
-        );
-      }
-    };
-
     if (document.getElementById(scriptId)) {
-      loadMap();
+      waitForNaverMaps(() => {
+        initializeMap();        // ✅ 지도 먼저 생성
+        startGeolocation();     // ✅ 위치 추적은 나중에
+      });
     } else {
       const script = document.createElement("script");
       script.id = scriptId;
-      script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${
-        import.meta.env.VITE_NAVER_MAP_CLIENT_ID
-      }&language=en`;
+      script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${import.meta.env.VITE_NAVER_MAP_CLIENT_ID}&language=en`;
       script.async = true;
-      script.onload = loadMap;
+      script.onload = () =>
+        waitForNaverMaps(() => {
+          initializeMap();
+          startGeolocation();
+        });
       document.head.appendChild(script);
     }
 
@@ -217,9 +234,7 @@ export default function MapView() {
         navigator.geolocation.clearWatch(watchIdRef.current);
       if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
       if (mapRef.current) {
-        (
-          mapRef.current as naver.maps.Map & { destroy?: () => void }
-        ).destroy?.();
+        (mapRef.current as naver.maps.Map & { destroy?: () => void }).destroy?.();
         mapRef.current = null;
       }
       attractionMarkersRef.current.forEach((m) => m.setMap(null));
