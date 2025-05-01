@@ -13,7 +13,6 @@ export function useLoginWithGoogle(): () => Promise<string> {
     scope: "profile",
     onSuccess: (tokenResponse) => {
       const accessToken = tokenResponse.access_token;
-      console.log("google accessToken: " + accessToken);
       if (accessToken && promiseRef.current) {
         promiseRef.current.resolve(accessToken);
         promiseRef.current = null;
