@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 interface Props {
   visible: boolean;
@@ -15,6 +16,27 @@ export default function ArrivalOverlay({
 }: Props) {
   const navigate = useNavigate();
   if (!visible) return null;
+
+  // 방문 기록 API 요청 함수
+  const postVisit = async () => {
+    try {
+      await axios.post("/api/v1/visits", {
+        attractionId: Number(translationId),
+      });
+    } catch (err) {
+      console.error("방문 기록 실패:", err);
+    }
+  };
+
+  // 버튼 공통 스타일
+  const fullButtonStyle = {
+    width: "100%",
+    padding: "14px",
+    borderRadius: "999px",
+    fontWeight: "bold",
+    fontSize: "15px",
+    cursor: "pointer",
+  } as const;
 
   return (
     <div
@@ -56,21 +78,17 @@ export default function ArrivalOverlay({
         {/* Continue Quiz */}
         <button
           style={{
-            width: "100%",
-            padding: "14px",
+            ...fullButtonStyle,
             background: "linear-gradient(to right, #6B7BFF, #B226A8)",
             border: "none",
-            borderRadius: "999px",
             color: "white",
-            fontWeight: "bold",
-            fontSize: "15px",
-            cursor: "pointer",
           }}
-          onClick={() => {
+          onClick={async () => {
+            await postVisit();
             navigate("/quiz", {
               state: {
                 location: destinationName,
-                translationId: translationId,
+                translationId,
               },
               replace: true,
             });
@@ -81,35 +99,28 @@ export default function ArrivalOverlay({
 
         {/* Return to Home */}
         <button
-          onClick={() => navigate("/home", { replace: true })}
           style={{
-            width: "100%",
-            padding: "14px",
+            ...fullButtonStyle,
             background: "white",
             border: "1px solid #ccc",
-            borderRadius: "999px",
-            fontWeight: "bold",
-            fontSize: "15px",
-            cursor: "pointer",
+          }}
+          onClick={async () => {
+            await postVisit();
+            navigate("/home", { replace: true });
           }}
         >
           Return to Home
         </button>
 
-        {/* 취소 (투명) */}
+        {/* 취소 */}
         <button
-          onClick={onCancel}
           style={{
-            width: "100%",
-            padding: "14px",
+            ...fullButtonStyle,
             background: "transparent",
             border: "1px solid white",
-            borderRadius: "999px",
-            fontWeight: "bold",
-            fontSize: "15px",
-            cursor: "pointer",
             color: "white",
           }}
+          onClick={onCancel}
         >
           Cancel
         </button>
