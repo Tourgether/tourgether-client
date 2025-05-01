@@ -16,7 +16,7 @@ interface LocationState {
   };
 }
 
-export default function RoutePage() {
+export default function RouteZPage() {
   const { state } = useLocation() as { state?: LocationState };
   const destination = state?.destination;
 
@@ -45,7 +45,10 @@ export default function RoutePage() {
       (err) => {
         console.error("위치 정보를 불러오지 못했습니다", err);
       },
-      { enableHighAccuracy: true }
+      { enableHighAccuracy: false,
+        timeout: 5000,
+        maximumAge: 10_000
+     }
     );
   }, [destination]);
 

@@ -18,6 +18,18 @@ export default function RoutePolylineMapView({ sections, start, end }: RoutePoly
   const myLocationMarkerRef = useRef<naver.maps.Marker | null>(null);
   const watchIdRef = useRef<number | null>(null);
 
+  // naver.maps가 완전히 로드될 때까지 기다리는 유틸 함수
+  const waitForNaverMaps = (callback: () => void) => {
+    const check = () => {
+      if (window.naver && window.naver.maps) {
+        callback();
+      } else {
+        setTimeout(check, 100);
+      }
+    };
+    check();
+  };
+
   useEffect(() => {
     const scriptId = "naver-map-sdk";
 
@@ -75,7 +87,10 @@ export default function RoutePolylineMapView({ sections, start, end }: RoutePoly
             }
           },
           console.error,
-          { enableHighAccuracy: true, timeout: 10000 }
+          { enableHighAccuracy: false,
+            timeout: 5000,
+            maximumAge: 10_000
+          }
         );
       }
 
@@ -93,14 +108,13 @@ export default function RoutePolylineMapView({ sections, start, end }: RoutePoly
     };
 
     if (document.getElementById(scriptId)) {
-      loadMap();
+      waitForNaverMaps(loadMap);
     } else {
       const script = document.createElement("script");
       script.id = scriptId;
-      // TODO : language
       script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${import.meta.env.VITE_NAVER_MAP_CLIENT_ID}&language=en`;
       script.async = true;
-      script.onload = loadMap;
+      script.onload = () => waitForNaverMaps(loadMap);
       document.head.appendChild(script);
     }
 
