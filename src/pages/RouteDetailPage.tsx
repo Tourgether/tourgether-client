@@ -9,6 +9,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import { MdRecordVoiceOver } from "react-icons/md";
 import RouteDetailBottomSheet from "../components/route/RouteDetailBottomSheet";
 import DocentTooltip from "../components/route/DocentTootip";
+import ArrivalOverlay from "../components/route/ArrivalOverlay";
 
 interface Coord {
   lat: number;
@@ -27,13 +28,12 @@ export default function RouteDetailPage() {
   };
 
   const navigate = useNavigate();
-  const mapObj = location.state?.route.info.mapObj;
-  const start = location.state?.start;
-  const end = location.state?.end;
-  const destName = location.state?.destName;
+  const { route, start, end, destName, id } = location.state;
+  const mapObj = route.info.mapObj;
 
   const [sections, setSections] = useState<ColoredPolylineSection[]>([]);
   const [docentOpen, setDocentOpen] = useState(false);
+  const [arrived, setArrived] = useState(false);
 
   useEffect(() => {
     if (!mapObj) return;
@@ -48,7 +48,7 @@ export default function RouteDetailPage() {
       {/* 지도 */}
       <RoutePolylineMapView sections={sections} start={start} end={end} />
 
-      {/* 🔙 뒤로가기 버튼 */}
+      {/* 뒤로가기 버튼 */}
       <button
         onClick={() => navigate(-1)}
         style={{
@@ -69,7 +69,7 @@ export default function RouteDetailPage() {
         <FaArrowLeft size={16} color="#333" />
       </button>
 
-      {/* 도슨트 버튼 + 말풍선 */}
+      {/* 도슨트 버튼 */}
       <div style={{ position: "absolute", top: 52, right: 16, zIndex: 1000 }}>
         <button
           onClick={() => setDocentOpen(!docentOpen)}
@@ -82,22 +82,56 @@ export default function RouteDetailPage() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            zIndex: 1000
           }}
         >
           <MdRecordVoiceOver size={24} color="#9B28FF" />
         </button>
 
-        {/* 말풍선 카드 */}
-        <DocentTooltip visible={docentOpen} language="ko" translationId={location.state?.id} name={destName} />
+        {/* 말풍선  TODO: language */}
+        <DocentTooltip visible={docentOpen} language="ko" translationId={id} name={destName} />
       </div>
 
-      {/* 바텀시트 */}
-      <RouteDetailBottomSheet
-        route={location.state.route}
-        startLabel="My Location"
-        destLabel={destName}
-      />
+      {/* 📍 도착 버튼 */}
+      {!arrived && (
+        <button
+          onClick={() => setArrived(true)}
+          style={{
+            position: "absolute",
+            bottom: 180,
+            right: 16,
+            zIndex: 1000,
+            background: "linear-gradient(#7B2CBF, #9B28FF)",
+            color: "white",
+            border: "none",
+            padding: "12px 20px",
+            borderRadius: "999px",
+            fontWeight: "bold",
+            boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
+            fontSize: "14px",
+          }}
+        >
+          도착
+        </button>
+      )}
+
+      {/* 도착 오버레이 */}
+      {arrived && (
+        <ArrivalOverlay
+            visible={true}
+            destinationName={destName}
+            translationId={id}
+            onCancel={() => setArrived(false)}
+        />
+      )}
+
+      {/* 바텀시트 - 도착했을 땐 숨김 */}
+      {!arrived && (
+        <RouteDetailBottomSheet
+          route={route}
+          startLabel="My Location"
+          destLabel={destName}
+        />
+      )}
     </div>
   );
 }
