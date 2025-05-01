@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
-import axios from "axios";
+import api from "../api/core/axios";
 import styles from "../styles/mypage/VisitHistory.module.css";
 import backButtonStyles from "../styles/common/BackButton.module.css";
 import PageContainer from "../components/common/PageContainer";
@@ -24,7 +24,7 @@ export default function LikedPage() {
   };
 
   useEffect(() => {
-    axios
+    api
       .get("/api/v1/attractions/likes/me")
       .then((res) => {
         setLikes(res.data.data);

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../../api/core/axios";
 
 interface Props {
   visible: boolean;
@@ -20,7 +20,7 @@ export default function ArrivalOverlay({
   // 방문 기록 API 요청 함수
   const postVisit = async () => {
     try {
-      await axios.post("/api/v1/visits", {
+      await api.post("/api/v1/visits", {
         attractionId: Number(translationId),
       });
     } catch (err) {

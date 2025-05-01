@@ -13,7 +13,6 @@ export function useLoginWithGoogle(): () => Promise<string> {
     scope: "profile",
     onSuccess: (tokenResponse) => {
       const accessToken = tokenResponse.access_token;
-      console.log("google accessToken: " + accessToken);
       if (accessToken && promiseRef.current) {
         promiseRef.current.resolve(accessToken);
         promiseRef.current = null;
@@ -30,7 +29,7 @@ export function useLoginWithGoogle(): () => Promise<string> {
   const loginWithGoogle = (): Promise<string> => {
     return new Promise((resolve, reject) => {
       promiseRef.current = { resolve, reject };
-      googleLogin(); // 🔥 팝업 열기
+      googleLogin();
     });
   };
 

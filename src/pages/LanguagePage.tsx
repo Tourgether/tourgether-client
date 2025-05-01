@@ -5,7 +5,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import styles from "../styles/common/LanguagePage.module.css";
 import backButtonStyles from "../styles/common/BackButton.module.css";
 import PageContainer from "../components/common/PageContainer";
-import axios from "axios";
+import api from "axios";
 import { useTranslation } from "react-i18next";
 
 interface Language {
@@ -38,7 +38,7 @@ export default function LanguagePage({
   useEffect(() => {
     const fetchLanguages = async () => {
       try {
-        const res = await axios.get("/api/v1/languages");
+        const res = await api.get("/api/v1/languages");
         setLanguages(res.data);
       } catch (err) {
         console.error("언어 목록 불러오기 실패", err);
@@ -47,7 +47,7 @@ export default function LanguagePage({
 
     const fetchMemberInfo = async () => {
       try {
-        const res = await axios.get("/api/v1/members/me");
+        const res = await api.get("/api/v1/members/me");
         setSelectedLang(res.data.data.languageCode);
       } catch (err) {
         console.error("유저 정보 조회 실패", err);
@@ -66,12 +66,12 @@ export default function LanguagePage({
     }
 
     try {
-      await axios.patch("/api/v1/members/me/languages", {
+      await api.patch("/api/v1/members/me/languages", {
         languageId: lang.id,
         languageCode: lang.languageCode,
       });
 
-      const res = await axios.get("/api/v1/members/me");
+      const res = await api.get("/api/v1/members/me");
       const updatedInfo: MemberInfo = res.data.data;
 
       localStorage.setItem("userInfo", JSON.stringify(updatedInfo));

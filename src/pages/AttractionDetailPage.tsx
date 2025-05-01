@@ -6,7 +6,7 @@ import {
   FaHeart,
   FaRegHeart,
 } from "react-icons/fa";
-import axios from "axios";
+import api from "../api/core/axios";
 import "../styles/AttractionDetail.css";
 
 interface AttractionDetail {
@@ -50,7 +50,7 @@ export default function AttractionDetailPage() {
     try {
       if (!detail?.attractionId) return;
 
-      const response = await axios.post(
+      const response = await api.post(
         `/api/v1/attractions/${detail.attractionId}/like/toggle`
       );
       setIsLiked(response.data.data);
@@ -62,7 +62,7 @@ export default function AttractionDetailPage() {
   useEffect(() => {
     async function fetchDetail() {
       try {
-        const response = await axios.get(`/api/v1/attractions/${id}`);
+        const response = await api.get(`/api/v1/attractions/${id}`);
         setDetail(response.data.data);
       } catch (error) {
         console.error("Failed to fetch attraction detail", error);
@@ -77,7 +77,7 @@ export default function AttractionDetailPage() {
       try {
         if (!detail?.attractionId) return;
 
-        const response = await axios.get(
+        const response = await api.get(
           `/api/v1/attractions/${detail.attractionId}/like`
         );
         setIsLiked(response.data.data);
@@ -147,7 +147,7 @@ export default function AttractionDetailPage() {
                     name: detail.name,
                     lat: detail.latitude,
                     lng: detail.longitude,
-                    id: id
+                    id: id,
                   },
                 },
               })

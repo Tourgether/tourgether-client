@@ -7,12 +7,14 @@ interface SocialLoginButtonProps {
   provider: "kakao" | "naver" | "google";
   label: string;
   logo: string;
+  setIsLoading: (loading: boolean) => void;
 }
 
 export default function SocialLoginButton({
   provider,
   label,
   logo,
+  setIsLoading,
 }: SocialLoginButtonProps) {
   const { handleSocialLogin } = useSocialLogin();
 
@@ -20,13 +22,18 @@ export default function SocialLoginButton({
   const loginWithNaver = useLoginWithNaver();
   const loginWithGoogle = useLoginWithGoogle();
 
-  const handleClick = () => {
-    if (provider === "kakao") {
-      handleSocialLogin("kakao", loginWithKakao);
-    } else if (provider === "naver") {
-      handleSocialLogin("naver", loginWithNaver);
-    } else if (provider === "google") {
-      handleSocialLogin("google", loginWithGoogle);
+  const handleClick = async () => {
+    try {
+      setIsLoading(true);
+      if (provider === "kakao") {
+        await handleSocialLogin("kakao", loginWithKakao);
+      } else if (provider === "naver") {
+        await handleSocialLogin("naver", loginWithNaver);
+      } else if (provider === "google") {
+        await handleSocialLogin("google", loginWithGoogle);
+      }
+    } finally {
+      setIsLoading(false); // 실패하든 성공하든 로딩 제거
     }
   };
 
