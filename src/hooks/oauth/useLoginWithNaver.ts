@@ -2,7 +2,7 @@ export function useLoginWithNaver() {
   return (): Promise<string> =>
     new Promise((resolve, reject) => {
       if (typeof window !== "undefined") {
-        const clientId = "vGkfUEHWFQcXpt_Bvsvo";
+        const clientId = import.meta.env.VITE_NAVER_LOGIN_CLIENT_ID;
         const redirectUri = encodeURIComponent(
           "http://localhost:5173/oauth/callback/naver"
         );
