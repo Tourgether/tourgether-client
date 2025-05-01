@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import axios from "axios";
+import api from "../../api/core/axios";
 import DestinationName from "../home/DestinationName";
 import "../../styles/HomeTopDestination.css";
 
@@ -81,7 +81,7 @@ export default function HomeTopDestination() {
     navigator.geolocation.getCurrentPosition(
       async ({ coords }) => {
         try {
-          const { data } = await axios.get("/api/v1/attractions/nearby", {
+          const { data } = await api.get("/api/v1/attractions/nearby", {
             params: {
               latitude: coords.latitude,
               longitude: coords.longitude,
@@ -109,7 +109,7 @@ export default function HomeTopDestination() {
         params.area = area;
       }
 
-      const response = await axios.get(`/api/v1/attractions/popular`, {
+      const response = await api.get(`/api/v1/attractions/popular`, {
         params,
       });
       setDestinations(response.data.data);
