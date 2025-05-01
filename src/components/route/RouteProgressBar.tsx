@@ -40,7 +40,7 @@ export function RouteProgressBar({ subPaths }: RouteProgressBarProps) {
         const icon = getIcon(s.trafficType);
 
         const flexGrow = s.sectionTime;
-        const minWidth = s.sectionTime <= 3 ? 60 : 48;
+        const minWidth = s.sectionTime <= 3 ? 50 : 48;
 
         return (
           <div
@@ -56,7 +56,7 @@ export function RouteProgressBar({ subPaths }: RouteProgressBarProps) {
           >
             <div style={{
               position: "absolute",
-              left: "6px",
+              left: "1px",
               top: "50%",
               transform: "translateY(-50%)",
               color: "#fff",
@@ -73,7 +73,7 @@ export function RouteProgressBar({ subPaths }: RouteProgressBarProps) {
               left: "50%",
               transform: "translate(-50%, -50%)",
               color: "#fff",
-              fontSize: "10px",
+              fontSize: "8px",
               fontWeight: 600,
               whiteSpace: "nowrap"
             }}>
