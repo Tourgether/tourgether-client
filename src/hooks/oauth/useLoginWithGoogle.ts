@@ -30,7 +30,7 @@ export function useLoginWithGoogle(): () => Promise<string> {
   const loginWithGoogle = (): Promise<string> => {
     return new Promise((resolve, reject) => {
       promiseRef.current = { resolve, reject };
-      googleLogin(); // 🔥 팝업 열기
+      googleLogin();
     });
   };
 

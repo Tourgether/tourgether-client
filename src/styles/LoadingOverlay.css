@@ -1,0 +1,39 @@
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명 검정 배경 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* 최상위에 표시 */
+}
+
+.logo-container {
+  position: relative;
+  width: 200px;
+  height: auto;
+}
+
+.logo {
+  width: 100%;
+  height: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.logo.overlay {
+  animation: fadeLoop 2.5s ease-in-out infinite alternate;
+}
+
+@keyframes fadeLoop {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

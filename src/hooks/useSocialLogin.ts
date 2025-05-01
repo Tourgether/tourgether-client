@@ -21,6 +21,7 @@ export function useSocialLogin() {
       navigate("/home");
     } catch (error) {
       console.error(`${provider} 로그인 실패`, error);
+      navigate("/");
     }
   }
 

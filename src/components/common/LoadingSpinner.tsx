@@ -1,4 +1,4 @@
-import '../../styles/LoadingSpinner.css'
+import "../../styles/LoadingSpinner.css";
 
 function LoadingSpinner() {
   return <div className="loading-spinner" />;
