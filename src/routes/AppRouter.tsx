@@ -19,6 +19,7 @@ import LikedPage from "../pages/LikedPage";
 import VisitHistoryPage from "../pages/VisitHistoryPage";
 import LanguagePage from "../pages/LanguagePage";
 import PrivateRoutes from "./PrivateRoutes";
+import Quiz from "../pages/Quiz";
 
 export default function AppRouter() {
   return (
@@ -39,6 +40,7 @@ export default function AppRouter() {
             <Route path="/attraction/:id" element={<AttractionDetailPage />} />
             <Route path="/route" element={<RoutePage />} />
             <Route path="/route-detail" element={<RouteDetailPage />} />
+            <Route path="/quiz" element={<Quiz />} />
             <Route path="/mypage/Language" element={<LanguagePage />} />
             <Route path="/mypage/liked" element={<LikedPage />} />
             <Route path="/mypage/visits" element={<VisitHistoryPage />} />
