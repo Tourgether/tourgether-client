@@ -1,5 +1,8 @@
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/core/axios";
+import { FaPlay, FaPause } from "react-icons/fa";
+import PageContainer from "../common/PageContainer";
 
 interface Props {
   visible: boolean;
@@ -15,9 +18,28 @@ export default function ArrivalOverlay({
   onCancel,
 }: Props) {
   const navigate = useNavigate();
-  if (!visible) return null;
+  const [audioText, setAudioText] = useState("");
+  const [audioUrl, setAudioUrl] = useState("");
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // 방문 기록 API 요청 함수
+  useEffect(() => {
+    if (!visible) return;
+
+    const fetchAttractionDetail = async () => {
+      try {
+        const res = await api.get(`/api/v1/attractions/${translationId}`);
+        const data = res.data.data;
+        setAudioText(data.audioText || "");
+        setAudioUrl(data.audioUrl || "");
+      } catch (err) {
+        console.error("오디오 데이터 조회 실패", err);
+      }
+    };
+
+    fetchAttractionDetail();
+  }, [visible, translationId]);
+
   const postVisit = async () => {
     try {
       await api.post("/api/v1/visits", {
@@ -28,43 +50,92 @@ export default function ArrivalOverlay({
     }
   };
 
-  // 버튼 공통 스타일
-  const fullButtonStyle = {
-    width: "100%",
-    padding: "14px",
-    borderRadius: "999px",
-    fontWeight: "bold",
-    fontSize: "15px",
-    cursor: "pointer",
-  } as const;
+  const toggleAudio = () => {
+    if (!audioRef.current) return;
+
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+    }
+    setIsPlaying(!isPlaying);
+  };
+
+  if (!visible) return null;
 
   return (
-    <div
+   <PageContainer>
+     <div
       style={{
         position: "fixed",
         inset: 0,
-        backgroundColor: "rgba(0,0,0,0.7)",
+        backdropFilter: "blur(6px)",
+        backgroundColor: "rgba(0,0,0,0.65)",
         zIndex: 9999,
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
         alignItems: "center",
         padding: "48px 24px",
+        fontFamily: "'Pretendard', 'Noto Sans KR', sans-serif",
       }}
     >
-      {/* 상단 텍스트 */}
       <h2
         style={{
           color: "white",
-          fontSize: "20px",
+          fontSize: "24px",
+          fontWeight: "bold",
           textAlign: "center",
-          marginTop: "40px",
+          marginTop: "32px",
         }}
       >
-        Arrived at {destinationName}!
+        Arrived at <span style={{ color: "#FFD700" }}>{destinationName}</span>!
       </h2>
 
-      {/* 버튼 영역 (하단) */}
+      {/* 설명 카드 */}
+      {audioText && (
+        <div
+          style={{
+            background: "rgba(255, 255, 255, 0.15)",
+            padding: "20px",
+            borderRadius: "16px",
+            color: "white",
+            fontSize: "16px",
+            lineHeight: 1.6,
+            textAlign: "center",
+            maxWidth: "380px",
+          }}
+        >
+          {audioText}
+        </div>
+      )}
+
+      {/* 오디오 */}
+      {audioUrl && (
+        <div style={{ marginTop: "12px", marginBottom: "20px" }}>
+          <audio ref={audioRef} src={audioUrl} preload="auto" />
+          <button
+            onClick={toggleAudio}
+            style={{
+              padding: "10px 20px",
+              background: "white",
+              border: "none",
+              borderRadius: "999px",
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              fontWeight: "bold",
+              fontSize: "14px",
+              cursor: "pointer",
+            }}
+          >
+            {isPlaying ? <FaPause size={14} /> : <FaPlay size={14} />}
+            {isPlaying ? "Pause Audio" : "Play Audio"}
+          </button>
+        </div>
+      )}
+
+      {/* 하단 버튼 영역 */}
       <div
         style={{
           width: "100%",
@@ -75,13 +146,17 @@ export default function ArrivalOverlay({
           marginBottom: "40px",
         }}
       >
-        {/* Continue Quiz */}
         <button
           style={{
-            ...fullButtonStyle,
-            background: "linear-gradient(to right, #6B7BFF, #B226A8)",
+            width: "100%",
+            padding: "14px",
+            background: "linear-gradient(to right, #5B44E8, #C32BAD)",
             border: "none",
+            borderRadius: "999px",
             color: "white",
+            fontWeight: "bold",
+            fontSize: "15px",
+            cursor: "pointer",
           }}
           onClick={async () => {
             await postVisit();
@@ -97,34 +172,43 @@ export default function ArrivalOverlay({
           Continue Quiz
         </button>
 
-        {/* Return to Home */}
         <button
-          style={{
-            ...fullButtonStyle,
-            background: "white",
-            border: "1px solid #ccc",
-          }}
           onClick={async () => {
             await postVisit();
             navigate("/home", { replace: true });
+          }}
+          style={{
+            width: "100%",
+            padding: "14px",
+            background: "white",
+            border: "1px solid #ccc",
+            borderRadius: "999px",
+            fontWeight: "bold",
+            fontSize: "15px",
+            cursor: "pointer",
           }}
         >
           Return to Home
         </button>
 
-        {/* 취소 */}
         <button
+          onClick={onCancel}
           style={{
-            ...fullButtonStyle,
+            width: "100%",
+            padding: "14px",
             background: "transparent",
             border: "1px solid white",
+            borderRadius: "999px",
+            fontWeight: "bold",
+            fontSize: "15px",
+            cursor: "pointer",
             color: "white",
           }}
-          onClick={onCancel}
         >
           Cancel
         </button>
       </div>
     </div>
+   </PageContainer>
   );
 }
