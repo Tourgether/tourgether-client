@@ -4,7 +4,7 @@ export function useLoginWithNaver() {
       if (typeof window !== "undefined") {
         const clientId = import.meta.env.VITE_NAVER_LOGIN_CLIENT_ID;
         const redirectUri = encodeURIComponent(
-          "http://localhost:5173/oauth/callback/naver"
+          import.meta.env.VITE_NAVER_LOGIN_REDIRECTURI
         );
         const state = Math.random().toString(36).substring(2);
 
