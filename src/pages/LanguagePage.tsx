@@ -101,7 +101,7 @@ export default function LanguagePage({
         </div>
       )}
 
-      <h2 className={styles.title}>Language</h2>
+      <h2 className={styles.title}>{t("mypage.language")}</h2>
       <div className={styles.divider} />
 
       <div className={styles.languageList}>

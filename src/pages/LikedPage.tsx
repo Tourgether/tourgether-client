@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 import api from "../api/core/axios";
 import styles from "../styles/mypage/VisitHistory.module.css";
 import backButtonStyles from "../styles/common/BackButton.module.css";
@@ -16,6 +17,7 @@ interface LikedAttraction {
 }
 
 export default function LikedPage() {
+  const { t } = useTranslation();
   const [likes, setLikes] = useState<LikedAttraction[]>([]);
   const navigate = useNavigate();
 
@@ -45,7 +47,7 @@ export default function LikedPage() {
         </div>
 
         <div className={styles.section}>
-          <h2 className={styles.title}>Liked Attractions</h2>
+          <h2 className={styles.title}>{t("mypage.visitHistory")}</h2>
           <div className={styles.divider} />
         </div>
         <div className={styles.list}>
