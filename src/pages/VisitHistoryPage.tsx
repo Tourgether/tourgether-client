@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { FaArrowLeft } from "react-icons/fa";
 import api from "../api/core/axios";
 import styles from "../styles/mypage/VisitHistory.module.css";
@@ -17,6 +18,8 @@ interface Visit {
 }
 
 export default function VisitHistoryPage() {
+  const { t } = useTranslation();
+
   const [visits, setVisits] = useState<Visit[]>([]);
 
   const navigate = useNavigate();
@@ -47,7 +50,7 @@ export default function VisitHistoryPage() {
         </div>
 
         <div className={styles.section}>
-          <h2 className={styles.title}>Visit History</h2>
+          <h2 className={styles.title}>{t("mypage.visitHistory")}</h2>
           <div className={styles.divider} />
         </div>
         <div className={styles.list}>

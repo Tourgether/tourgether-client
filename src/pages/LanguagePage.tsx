@@ -5,7 +5,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import styles from "../styles/common/LanguagePage.module.css";
 import backButtonStyles from "../styles/common/BackButton.module.css";
 import PageContainer from "../components/common/PageContainer";
-import api from "axios";
+import api from "../api/core/axios";
 import { useTranslation } from "react-i18next";
 
 interface Language {
@@ -101,7 +101,7 @@ export default function LanguagePage({
         </div>
       )}
 
-      <h2 className={styles.title}>Language</h2>
+      <h2 className={styles.title}>{t("mypage.language")}</h2>
       <div className={styles.divider} />
 
       <div className={styles.languageList}>

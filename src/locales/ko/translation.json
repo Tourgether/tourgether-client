@@ -13,6 +13,30 @@
   "home": {
     "mostVisited": "가장 많이 방문한 명소",
     "nearby": "근처 추천 명소",
-    "cities": ["서울시", "도심권", "서남권", "서북권", "동북권", "동남권"]
+    "cities": ["서울시", "도심권", "서남권", "서북권", "동북권", "동남권"],
+    "emptyPopular": "조회된 인기 여행지가 없습니다.",
+    "emptyNearby": "근처에 등록된 관광지가 없습니다."
+  },
+
+  "detail": {
+    "hoursOfOperation": "개장 시간 정보",
+    "descriptionTitle": "설명",
+    "openingDayLabel": "개장 요일",
+    "openingTimeLabel": "개장 시간",
+    "closedDayLabel": "휴무일"
+  },
+
+  "mypage": {
+    "language": "언어 설정",
+    "liked": "찜한 관광지",
+    "visitHistory": "방문 기록",
+    "logout": "로그아웃",
+    "withdraw": "회원 탈퇴"
+  },
+
+  "tab": {
+    "home": "홈",
+    "map": "지도",
+    "mypage": "내 정보"
   }
 }

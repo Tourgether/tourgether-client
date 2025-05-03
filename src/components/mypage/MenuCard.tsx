@@ -1,29 +1,35 @@
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import styles from "../../styles/mypage/MenuCard.module.css";
-import { Globe, Heart, Copy, LogOut } from "lucide-react";
+import { Globe, Heart, Copy, LogOut, UserX } from "lucide-react";
 
 export default function MenuCard() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const menuList = [
     {
       icon: <Globe size={24} strokeWidth={1.5} />,
-      label: "Language",
+      label: t("mypage.language"),
       onClick: () => navigate("/mypage/language"),
     },
     {
       icon: <Heart size={24} strokeWidth={1.5} />,
-      label: "Liked",
+      label: t("mypage.liked"),
       onClick: () => navigate("/mypage/liked"),
     },
     {
       icon: <Copy size={24} strokeWidth={1.5} />,
-      label: "Visit History",
+      label: t("mypage.visitHistory"),
       onClick: () => navigate("/mypage/visits"),
     },
     {
       icon: <LogOut size={24} strokeWidth={1.5} color="#E74C3C" />,
-      label: "Log out",
+      label: t("mypage.logout"),
+    },
+    {
+      icon: <UserX size={24} strokeWidth={1.5} color="#E74C3C" />,
+      label: t("mypage.withdraw"),
     },
   ];
 

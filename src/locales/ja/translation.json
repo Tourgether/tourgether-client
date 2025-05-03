@@ -10,9 +10,34 @@
     "title": "Let’s, Tourgether!",
     "description": "ソウルのさまざまな名所を探索しましょう！"
   },
+
   "home": {
     "mostVisited": "最も訪問された名所",
     "nearby": "近くの観光地",
-    "cities": ["ソウル市", "都心圏", "南西圏", "北西圏", "北東圏", "南東圏"]
+    "cities": ["ソウル市", "都心圏", "南西圏", "北西圏", "北東圏", "南東圏"],
+    "emptyPopular": "人気の名所が見つかりませんでした。",
+    "emptyNearby": "近くの観光地はありません。"
+  },
+
+  "detail": {
+    "hoursOfOperation": "営業時間",
+    "descriptionTitle": "説明",
+    "openingDayLabel": "開館曜日",
+    "openingTimeLabel": "開館時間",
+    "closedDayLabel": "休館日"
+  },
+
+  "mypage": {
+    "language": "言語設定",
+    "liked": "お気に入り",
+    "visitHistory": "訪問履歴",
+    "logout": "ログアウト",
+    "withdraw": "退会"
+  },
+
+  "tab": {
+    "home": "ホーム",
+    "map": "地図",
+    "mypage": "マイページ"
   }
 }
