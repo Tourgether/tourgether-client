@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import api from "../../api/core/axios";
+import { getLanguageId } from "../../utils/getLanguageId";
 import DestinationName from "../home/DestinationName";
 import "../../styles/HomeTopDestination.css";
 
@@ -63,7 +64,7 @@ export default function HomeTopDestination() {
   >([]);
   const navigate = useNavigate();
 
-  const languageId = Number(localStorage.getItem("languageId")); // TODO: 로그인 유저 기준으로 설정
+  const languageId = getLanguageId(); // TODO: 로그인 유저 기준으로 설정
   const cities = t("home.cities", { returnObjects: true }) as string[];
 
   useEffect(() => {

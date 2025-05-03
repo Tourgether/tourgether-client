@@ -1,4 +1,5 @@
 import api from "./core/axios";
+import { getLanguageId } from "../../src/utils/getLanguageId";
 
 export interface AttractionSummary {
   id: number;
@@ -9,9 +10,10 @@ export interface AttractionSummary {
 }
 
 export const fetchAttractionsByKeyword = async (
-  lang: number,
+  overrideLangId: number | undefined,
   keyword: string
 ): Promise<AttractionSummary[]> => {
+  const lang = overrideLangId ?? getLanguageId();
   const response = await api.get("/api/v1/attractions", {
     params: { lang, keyword },
   });
@@ -19,7 +21,6 @@ export const fetchAttractionsByKeyword = async (
   if (!response.data.success) {
     throw new Error(response.data.message || "API 호출 실패");
   }
-
   return response.data.data;
 };
 
@@ -37,8 +38,10 @@ export const fetchAttractionsWithinBounds = async (
   swLng: number,
   neLat: number,
   neLng: number,
-  languageId: number = 1
+  overrideLangId?: number
 ): Promise<AttractionMapSummary[]> => {
+  const languageId = overrideLangId ?? getLanguageId();
+
   const response = await api.get("/api/v1/attractions/bounds", {
     params: { swLat, swLng, neLat, neLng, languageId },
   });
