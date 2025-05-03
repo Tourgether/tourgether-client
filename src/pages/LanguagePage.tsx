@@ -17,7 +17,7 @@ interface MemberInfo {
   provider: string;
   nickname: string;
   profileImage: string;
-  languageId: number; // 추가
+  languageId: number;
   languageCode: string;
 }
 
@@ -36,19 +36,34 @@ export default function LanguagePage({
   const [languages, setLanguages] = useState<Language[]>([]);
 
   useEffect(() => {
+    // 로컬 스토리지에 저장된 언어 코드가 있으면 우선 적용
+    const storedCode = localStorage.getItem("languageCode");
+    if (storedCode) {
+      setSelectedLang(storedCode);
+      i18n.changeLanguage(storedCode);
+    }
+
+    // 사용 가능한 언어 목록 조회
     const fetchLanguages = async () => {
       try {
-        const res = await api.get("/api/v1/languages");
+        const res = await api.get<Language[]>("/api/v1/languages");
         setLanguages(res.data);
       } catch (err) {
         console.error("언어 목록 불러오기 실패", err);
       }
     };
 
+    // 내 정보 조회해서 서버 기준으로 동기화
     const fetchMemberInfo = async () => {
       try {
-        const res = await api.get("/api/v1/members/me");
-        setSelectedLang(res.data.data.languageCode);
+        const res = await api.get<{ data: MemberInfo }>("/api/v1/members/me");
+        const { languageId, languageCode } = res.data.data;
+        setSelectedLang(languageCode);
+        i18n.changeLanguage(languageCode);
+
+        // 서버 기준으로 항상 덮어쓰기
+        localStorage.setItem("languageId", languageId.toString());
+        localStorage.setItem("languageCode", languageCode);
       } catch (err) {
         console.error("유저 정보 조회 실패", err);
       }
@@ -71,14 +86,15 @@ export default function LanguagePage({
         languageCode: lang.languageCode,
       });
 
-      const res = await api.get("/api/v1/members/me");
-      const updatedInfo: MemberInfo = res.data.data;
+      const res = await api.get<{ data: MemberInfo }>("/api/v1/members/me");
+      const { languageId, languageCode } = res.data.data;
 
-      localStorage.setItem("userInfo", JSON.stringify(updatedInfo));
-      localStorage.setItem("languageId", updatedInfo.languageId.toString());
+      localStorage.setItem("languageId", languageId.toString());
+      localStorage.setItem("languageCode", languageCode);
+      localStorage.setItem("userInfo", JSON.stringify(res.data.data));
 
-      setSelectedLang(updatedInfo.languageCode);
-      await i18n.changeLanguage(langCode);
+      setSelectedLang(languageCode);
+      await i18n.changeLanguage(languageCode);
 
       if (standalone) {
         navigate("/home");

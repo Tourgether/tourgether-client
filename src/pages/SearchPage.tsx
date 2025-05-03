@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getLanguageId } from "../utils/getLanguageId";
 import {
   fetchAttractionsByKeyword,
   AttractionSummary,
@@ -27,7 +28,8 @@ export default function SearchPage() {
     setResults([]);
 
     try {
-      const data = await fetchAttractionsByKeyword(1, keyword);
+      const langId = getLanguageId();
+      const data = await fetchAttractionsByKeyword(langId, keyword);
       setResults(data);
     } catch (error) {
       console.error("API 호출 에러", error);
