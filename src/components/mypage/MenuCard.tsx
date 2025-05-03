@@ -2,10 +2,23 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import styles from "../../styles/mypage/MenuCard.module.css";
 import { Globe, Heart, Copy, LogOut, UserX } from "lucide-react";
+import api from "../../api/core/axios";
+import { clearTokens } from "../../utils/tokenStorage";
 
 export default function MenuCard() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await api.post("/api/v1/auth/logout");
+      clearTokens();
+      navigate("/");
+    } catch (error) {
+      console.error("🚨 로그아웃 실패:", error);
+      alert("로그아웃 중 오류가 발생했습니다.");
+    }
+  };
 
   const menuList = [
     {
@@ -26,6 +39,7 @@ export default function MenuCard() {
     {
       icon: <LogOut size={24} strokeWidth={1.5} color="#E74C3C" />,
       label: t("mypage.logout"),
+      onClick: handleLogout,
     },
     {
       icon: <UserX size={24} strokeWidth={1.5} color="#E74C3C" />,
