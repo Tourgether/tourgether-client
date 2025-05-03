@@ -20,6 +20,8 @@
       "Northwest Area",
       "Northeast Area",
       "Southeast Area"
-    ]
+    ],
+    "emptyPopular": "No popular attractions found.",
+    "emptyNearby": "No nearby attractions available."
   }
 }

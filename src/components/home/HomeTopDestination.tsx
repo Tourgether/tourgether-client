@@ -174,7 +174,7 @@ export default function HomeTopDestination() {
             </div>
           ))
         ) : (
-          <div className="empty-message">조회된 인기 여행지가 없습니다.</div>
+          <div className="empty-message"> {t("home.emptyPopular")}</div>
         )}
       </div>
 
@@ -211,7 +211,7 @@ export default function HomeTopDestination() {
             </div>
           ))
         ) : (
-          <div className="empty-message">근처에 등록된 관광지가 없습니다.</div>
+          <div className="empty-message">{t("home.emptyNearby")}</div>
         )}
       </div>
     </>
