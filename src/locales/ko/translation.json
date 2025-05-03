@@ -32,5 +32,11 @@
     "visitHistory": "방문 기록",
     "logout": "로그아웃",
     "withdraw": "회원 탈퇴"
+  },
+
+  "tab": {
+    "home": "홈",
+    "map": "지도",
+    "mypage": "내 정보"
   }
 }

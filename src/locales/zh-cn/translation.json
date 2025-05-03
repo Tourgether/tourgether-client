@@ -33,5 +33,11 @@
     "visitHistory": "访问记录",
     "logout": "登出",
     "withdraw": "注销账户"
+  },
+
+  "tab": {
+    "home": "首页",
+    "map": "地图",
+    "mypage": "我的页面"
   }
 }

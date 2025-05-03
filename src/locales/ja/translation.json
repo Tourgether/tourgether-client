@@ -33,5 +33,11 @@
     "visitHistory": "訪問履歴",
     "logout": "ログアウト",
     "withdraw": "退会"
+  },
+
+  "tab": {
+    "home": "ホーム",
+    "map": "地図",
+    "mypage": "マイページ"
   }
 }

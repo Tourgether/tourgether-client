@@ -40,5 +40,11 @@
     "visitHistory": "Visit History",
     "logout": "Log out",
     "withdraw": "Withdraw"
+  },
+
+  "tab": {
+    "home": "HOME",
+    "map": "MAP",
+    "mypage": "MY PAGE"
   }
 }
