@@ -47,7 +47,7 @@ export default function LikedPage() {
         </div>
 
         <div className={styles.section}>
-          <h2 className={styles.title}>{t("mypage.visitHistory")}</h2>
+          <h2 className={styles.title}>{t("mypage.liked")}</h2>
           <div className={styles.divider} />
         </div>
         <div className={styles.list}>
