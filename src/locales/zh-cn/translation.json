@@ -25,5 +25,13 @@
     "openingDayLabel": "开放日期",
     "openingTimeLabel": "开放时间",
     "closedDayLabel": "闭馆日"
+  },
+
+  "mypage": {
+    "language": "语言设置",
+    "liked": "已收藏",
+    "visitHistory": "访问记录",
+    "logout": "登出",
+    "withdraw": "注销账户"
   }
 }

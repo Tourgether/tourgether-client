@@ -24,5 +24,13 @@
     "openingDayLabel": "개장 요일",
     "openingTimeLabel": "개장 시간",
     "closedDayLabel": "휴무일"
+  },
+
+  "mypage": {
+    "language": "언어 설정",
+    "liked": "찜한 관광지",
+    "visitHistory": "방문 기록",
+    "logout": "로그아웃",
+    "withdraw": "회원 탈퇴"
   }
 }

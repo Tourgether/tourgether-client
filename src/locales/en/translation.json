@@ -32,5 +32,13 @@
     "openingDayLabel": "Opening Days",
     "openingTimeLabel": "Opening Time",
     "closedDayLabel": "Closed Day"
+  },
+
+  "mypage": {
+    "language": "Language",
+    "liked": "Liked",
+    "visitHistory": "Visit History",
+    "logout": "Log out",
+    "withdraw": "Withdraw"
   }
 }

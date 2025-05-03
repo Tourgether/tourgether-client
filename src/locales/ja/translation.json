@@ -25,5 +25,13 @@
     "openingDayLabel": "開館曜日",
     "openingTimeLabel": "開館時間",
     "closedDayLabel": "休館日"
+  },
+
+  "mypage": {
+    "language": "言語設定",
+    "liked": "お気に入り",
+    "visitHistory": "訪問履歴",
+    "logout": "ログアウト",
+    "withdraw": "退会"
   }
 }
