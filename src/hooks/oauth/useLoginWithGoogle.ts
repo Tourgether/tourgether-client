@@ -18,7 +18,7 @@ export function useLoginWithGoogle(): () => Promise<string> {
         promiseRef.current = null;
       }
     },
-    onError: (err) => {
+    onError: (_) => {
       if (promiseRef.current) {
         promiseRef.current.reject(new Error("Google login failed"));
         promiseRef.current = null;
