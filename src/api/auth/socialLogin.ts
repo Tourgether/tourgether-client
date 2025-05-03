@@ -10,6 +10,9 @@ export async function socialLogin(provider: string, accessToken: string) {
     {
       baseURL: import.meta.env.VITE_API_BASE_URL,
       withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+      },
     }
   );
   return response.data;
