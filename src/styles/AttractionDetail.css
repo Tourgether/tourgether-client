@@ -120,15 +120,20 @@
 
 .button-row {
   position: absolute;
-  top: 50px;
-  left: 32px;
-  right: 32px;
+  top: 24px; /* 피그마 기준 Y 위치 */
+  left: 0;
+  right: 0;
+  padding: 0 24px; /* 좌우 여백 */
   display: flex;
   justify-content: space-between;
+  align-items: center;
   z-index: 10;
 }
 
 .back-button {
+  position: absolute;
+  top: 43px; /* Figma 기준 Y 위치 조절 */
+  left: 30px; /* Figma 기준 X 여백 */
   width: 34px;
   height: 34px;
   border-radius: 50%;
@@ -146,6 +151,9 @@
 }
 
 .like-button {
+  position: absolute;
+  top: 40px; /* 백버튼과 같은 Y 위치 */
+  right: 30px; /* Figma 기준 오른쪽 여백 */
   width: 34px;
   height: 34px;
   border-radius: 50%;

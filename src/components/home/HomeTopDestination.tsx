@@ -63,7 +63,7 @@ export default function HomeTopDestination() {
   >([]);
   const navigate = useNavigate();
 
-  const languageId = 1; // TODO: 로그인 유저 기준으로 설정
+  const languageId = Number(localStorage.getItem("languageId")); // TODO: 로그인 유저 기준으로 설정
   const cities = t("home.cities", { returnObjects: true }) as string[];
 
   useEffect(() => {
@@ -99,7 +99,7 @@ export default function HomeTopDestination() {
       },
       { enableHighAccuracy: true, timeout: 8000 }
     );
-  }, []);
+  }, [languageId]);
 
   const fetchDestinations = useCallback(async () => {
     try {

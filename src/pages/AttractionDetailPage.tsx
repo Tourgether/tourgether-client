@@ -94,30 +94,28 @@ export default function AttractionDetailPage() {
   return (
     <div className="attraction-page">
       <div className="attraction-image-container">
-        <div className="button-row">
-          <button
-            className="back-button"
-            onClick={() => {
-              if (state?.from === "/map") {
-                navigate("/map", {
-                  state: { selectedAttraction: state.attraction },
-                });
-              } else {
-                navigate("/home");
-              }
-            }}
-          >
-            <FaArrowLeft className="back-icon" />
-          </button>
+        <button
+          className="back-button"
+          onClick={() => {
+            if (state?.from === "/map") {
+              navigate("/map", {
+                state: { selectedAttraction: state.attraction },
+              });
+            } else {
+              navigate("/home");
+            }
+          }}
+        >
+          <FaArrowLeft className="back-icon" />
+        </button>
 
-          <button className="like-button" onClick={toggleLike}>
-            {isLiked ? (
-              <FaHeart className="heart-icon filled" />
-            ) : (
-              <FaRegHeart className="heart-icon" />
-            )}
-          </button>
-        </div>
+        <button className="like-button" onClick={toggleLike}>
+          {isLiked ? (
+            <FaHeart className="heart-icon filled" />
+          ) : (
+            <FaRegHeart className="heart-icon" />
+          )}
+        </button>
 
         <img
           src={
