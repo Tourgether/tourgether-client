@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useState } from "react";
+import LogoutConfirmModal from "../mypage/LogoutConfirmModal";
 import styles from "../../styles/mypage/MenuCard.module.css";
 import { Globe, Heart, Copy, LogOut, UserX } from "lucide-react";
 import api from "../../api/core/axios";
@@ -8,6 +10,7 @@ import { clearTokens } from "../../utils/tokenStorage";
 export default function MenuCard() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -39,7 +42,7 @@ export default function MenuCard() {
     {
       icon: <LogOut size={24} strokeWidth={1.5} color="#E74C3C" />,
       label: t("mypage.logout"),
-      onClick: handleLogout,
+      onClick: () => setShowModal(true),
     },
     {
       icon: <UserX size={24} strokeWidth={1.5} color="#E74C3C" />,
@@ -48,19 +51,32 @@ export default function MenuCard() {
   ];
 
   return (
-    <div className={styles.cardContainer}>
-      {menuList.map((item, idx) => (
-        <div key={idx} onClick={item.onClick}>
-          <div className={styles.menuItem}>
-            <div className={styles.iconWithText}>
-              {item.icon}
-              <span>{item.label}</span>
+    <>
+      <div className={styles.cardContainer}>
+        {menuList.map((item, idx) => (
+          <div key={idx} onClick={item.onClick}>
+            <div className={styles.menuItem}>
+              <div className={styles.iconWithText}>
+                {item.icon}
+                <span>{item.label}</span>
+              </div>
+              <span className={styles.arrow}>&gt;</span>
             </div>
-            <span className={styles.arrow}>&gt;</span>
+            {idx < menuList.length - 1 && <div className={styles.divider} />}
           </div>
-          {idx < menuList.length - 1 && <div className={styles.divider} />}
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+
+      {/* 🔽 로그아웃 확인 모달 */}
+      {showModal && (
+        <LogoutConfirmModal
+          onConfirm={() => {
+            setShowModal(false);
+            handleLogout();
+          }}
+          onCancel={() => setShowModal(false)}
+        />
+      )}
+    </>
   );
 }
