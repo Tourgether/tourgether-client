@@ -17,7 +17,6 @@ export default function SocialLoginButton({
   setIsLoading,
 }: SocialLoginButtonProps) {
   const { handleSocialLogin } = useSocialLogin();
-
   const loginWithKakao = useLoginWithKakao();
   const loginWithNaver = useLoginWithNaver();
   const loginWithGoogle = useLoginWithGoogle();
@@ -29,11 +28,11 @@ export default function SocialLoginButton({
         await handleSocialLogin("kakao", loginWithKakao);
       } else if (provider === "naver") {
         await handleSocialLogin("naver", loginWithNaver);
-      } else if (provider === "google") {
+      } else {
         await handleSocialLogin("google", loginWithGoogle);
       }
     } finally {
-      setIsLoading(false); // 실패하든 성공하든 로딩 제거
+      setIsLoading(false);
     }
   };
 
