@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   FaMapMarkerAlt,
   FaArrowLeft,
@@ -27,6 +28,7 @@ interface AttractionDetail {
 }
 
 export default function AttractionDetailPage() {
+  const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const { state } = useLocation() as {
     state: {
@@ -158,22 +160,24 @@ export default function AttractionDetailPage() {
 
       <div className="attraction-info">
         <div className="attraction-open-section">
-          <h3>Hours of Operation</h3>
+          <h3>{t("detail.hoursOfOperation")}</h3>
           <div className="attraction-open">
             <div>
-              <strong>개장 요일</strong>: {detail.openingDay}
+              <strong>{t("detail.openingDayLabel")}</strong>:{" "}
+              {detail.openingDay}
             </div>
             <div>
-              <strong>개장 시간</strong>: {detail.openingTime}
+              <strong>{t("detail.openingTimeLabel")}</strong>:{" "}
+              {detail.openingTime}
             </div>
             <div>
-              <strong>휴무일</strong>: {detail.closedDay}
+              <strong>{t("detail.closedDayLabel")}</strong>: {detail.closedDay}
             </div>
           </div>
         </div>
 
         <div className="attraction-description">
-          <h3>Description</h3>
+          <h3>{t("detail.descriptionTitle")}</h3>
           <p>{detail.summary}</p>
         </div>
       </div>

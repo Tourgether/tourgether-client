@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import styles from "../../styles/mypage/MenuCard.module.css";
-import { Globe, Heart, Copy, LogOut } from "lucide-react";
+import { Globe, Heart, Copy, LogOut, UserX } from "lucide-react";
 
 export default function MenuCard() {
   const navigate = useNavigate();
@@ -24,6 +24,11 @@ export default function MenuCard() {
     {
       icon: <LogOut size={24} strokeWidth={1.5} color="#E74C3C" />,
       label: "Log out",
+    },
+    {
+      icon: <UserX size={24} strokeWidth={1.5} color="#E74C3C" />,
+      label: "Withdraw",
+      onClick: () => navigate("/mypage/withdraw"),
     },
   ];
 

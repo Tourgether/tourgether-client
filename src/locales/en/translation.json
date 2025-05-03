@@ -10,6 +10,7 @@
     "title": "Let’s, Tourgether!",
     "description": "Explore the many attractions in Seoul!"
   },
+
   "home": {
     "mostVisited": "Top Destination",
     "nearby": "Nearby Attractions",
@@ -23,5 +24,13 @@
     ],
     "emptyPopular": "No popular attractions found.",
     "emptyNearby": "No nearby attractions available."
+  },
+
+  "detail": {
+    "hoursOfOperation": "Hours of Operation",
+    "descriptionTitle": "Description",
+    "openingDayLabel": "Opening Days",
+    "openingTimeLabel": "Opening Time",
+    "closedDayLabel": "Closed Day"
   }
 }
