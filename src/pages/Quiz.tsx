@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import api from "../api/core/axios";
 import PageContainer from "../components/common/PageContainer";
 import { MdRecordVoiceOver } from "react-icons/md";
@@ -13,7 +13,6 @@ interface Quiz {
 }
 
 export default function Quiz() {
-  const location = useLocation();
   const navigate = useNavigate();
 
   const translationId = 1;
