@@ -1,10 +1,11 @@
 import i18n from "../i18n";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import styles from "../styles/common/LanguagePage.module.css";
 import backButtonStyles from "../styles/common/BackButton.module.css";
 import PageContainer from "../components/common/PageContainer";
+import LanguagePageNewbie from "./LanguagePageNewbie";
 import api from "../api/core/axios";
 import { useTranslation } from "react-i18next";
 
@@ -31,9 +32,13 @@ export default function LanguagePage({
   showBackButton = true,
 }: Props) {
   const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useTranslation();
   const [selectedLang, setSelectedLang] = useState<string>("");
   const [languages, setLanguages] = useState<Language[]>([]);
+
+  // URL 이동 시 state로 전달된 standalone 우선 처리
+  const isStandalone = standalone || location.state?.standalone === true;
 
   useEffect(() => {
     // 로컬 스토리지에 저장된 언어 코드가 있으면 우선 적용
@@ -49,7 +54,6 @@ export default function LanguagePage({
         const res = await api.get<Language[]>("/api/v1/languages");
 
         const filteredLanguages = res.data.filter((lang) => lang.id !== 0);
-
         setLanguages(filteredLanguages);
       } catch (err) {
         console.error("언어 목록 불러오기 실패", err);
@@ -99,7 +103,7 @@ export default function LanguagePage({
       setSelectedLang(languageCode);
       await i18n.changeLanguage(languageCode);
 
-      if (standalone) {
+      if (isStandalone) {
         navigate("/home");
       }
     } catch (error) {
@@ -109,7 +113,8 @@ export default function LanguagePage({
 
   const Content = (
     <div className={styles.page}>
-      {showBackButton && (
+      {/* 뒤로가기 버튼은 standalone이 아닐 경우에만 표시 */}
+      {!isStandalone && showBackButton && (
         <div className={backButtonStyles.buttonRow}>
           <button
             className={backButtonStyles.backButton}
@@ -139,5 +144,9 @@ export default function LanguagePage({
     </div>
   );
 
-  return standalone ? Content : <PageContainer>{Content}</PageContainer>;
+  return isStandalone ? (
+    <LanguagePageNewbie>{Content}</LanguagePageNewbie>
+  ) : (
+    <PageContainer>{Content}</PageContainer>
+  );
 }

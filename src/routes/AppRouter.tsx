@@ -20,6 +20,7 @@ import VisitHistoryPage from "../pages/VisitHistoryPage";
 import LanguagePage from "../pages/LanguagePage";
 import PrivateRoutes from "./PrivateRoutes";
 import Quiz from "../pages/Quiz";
+import LanguagePageWrapper from "../pages/LanguagePageWrapper";
 
 export default function AppRouter() {
   return (
@@ -30,6 +31,7 @@ export default function AppRouter() {
           <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="/intro" element={<Intro />} />
           <Route path="/oauth/callback/naver" element={<NaverCallback />} />
+          <Route path="/language" element={<LanguagePageWrapper />} />
 
           {/* 로그인 필요 경로 */}
           <Route element={<PrivateRoutes />}>

@@ -41,8 +41,16 @@ export function useSocialLogin() {
       localStorage.setItem("languageCode", languageCode);
       localStorage.setItem("userInfo", JSON.stringify(memberInfo));
 
-      // 6) 홈으로 이동
-      navigate("/home", { replace: true });
+      // 최초 가입자라면 언어 설정 페이지로 보내기
+      if (languageId === 0) {
+        navigate("/language", {
+          state: { standalone: true },
+          replace: true,
+        });
+      } else {
+        // 6) 홈으로 이동
+        navigate("/home", { replace: true });
+      }
     } catch (error) {
       console.error(`${provider} 로그인 실패`, error);
       navigate("/intro", { replace: true });

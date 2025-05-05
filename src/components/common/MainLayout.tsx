@@ -5,7 +5,7 @@ import "../../styles/MainLayout.css";
 export default function MainLayout() {
   const location = useLocation();
 
-  const excludePaths = ["/", "/intro", "/route", "/route-detail"];
+  const excludePaths = ["/", "/intro", "/route", "/route-detail", "/language"];
   const showMainTab = !excludePaths.includes(location.pathname);
 
   return (
