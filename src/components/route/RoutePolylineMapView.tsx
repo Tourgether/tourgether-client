@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { ColoredPolylineSection } from "../../types/routeDetail";
+import { getNaverMapLanguageCode } from "../../utils/getLanguageId";
 
 interface Coord {
   lat: number;
@@ -87,9 +88,10 @@ export default function RoutePolylineMapView({ sections, start, end }: RoutePoly
             }
           },
           console.error,
-          { enableHighAccuracy: false,
+          {
+            enableHighAccuracy: false,
             timeout: 5000,
-            maximumAge: 10_000
+            maximumAge: 10_000,
           }
         );
       }
@@ -112,14 +114,14 @@ export default function RoutePolylineMapView({ sections, start, end }: RoutePoly
     } else {
       const script = document.createElement("script");
       script.id = scriptId;
-      script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${import.meta.env.VITE_NAVER_MAP_CLIENT_ID}&language=en`;
+      const langCode = getNaverMapLanguageCode();
+      script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${import.meta.env.VITE_NAVER_MAP_CLIENT_ID}&language=${langCode}`;
       script.async = true;
       script.onload = () => waitForNaverMaps(loadMap);
       document.head.appendChild(script);
     }
 
     return () => {
-      // 정리
       if (watchIdRef.current !== null) {
         navigator.geolocation.clearWatch(watchIdRef.current);
       }
