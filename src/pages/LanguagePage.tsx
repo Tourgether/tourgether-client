@@ -47,7 +47,10 @@ export default function LanguagePage({
     const fetchLanguages = async () => {
       try {
         const res = await api.get<Language[]>("/api/v1/languages");
-        setLanguages(res.data);
+
+        const filteredLanguages = res.data.filter((lang) => lang.id !== 0);
+
+        setLanguages(filteredLanguages);
       } catch (err) {
         console.error("언어 목록 불러오기 실패", err);
       }
