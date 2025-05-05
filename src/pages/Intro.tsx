@@ -50,6 +50,17 @@ export default function Intro() {
         localStorage.setItem("languageId", languageId.toString());
         localStorage.setItem("languageCode", languageCode);
         localStorage.setItem("userInfo", JSON.stringify(res.data.data));
+        console.log("languageId (value):", languageId);
+        console.log("languageId (type):", typeof languageId);
+
+        if (languageId === 0) {
+          console.log("/language = " + languageId);
+          navigate("/language", {
+            state: { standalone: true },
+            replace: true,
+          });
+          return;
+        }
 
         // 4) 홈으로 리다이렉트
         navigate("/home", { replace: true });
