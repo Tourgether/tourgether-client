@@ -39,5 +39,28 @@
     "home": "ホーム",
     "map": "地図",
     "mypage": "マイページ"
+  },
+
+  "route": {
+    "go": "GO!",
+    "subway": "地下鉄",
+    "bus": "バス",
+    "walk": "徒歩",
+    "boarding": "乗車",
+    "alighting": "下車",
+    "transit": "乗り換え",
+    "times": "回",
+    "departure": "出発地",
+    "arrival": "到着地"
+  },
+
+  "arrival": {
+    "arrivedAt": "<1>{{destination}}</1>に到着しました！",
+    "play": "音声を再生",
+    "pause": "一時停止",
+    "continueQuiz": "クイズを続ける",
+    "goHome": "ホームに戻る",
+    "cancel": "キャンセル",
+    "buttonLabel": "到着"
   }
 }

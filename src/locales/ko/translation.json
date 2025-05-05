@@ -38,5 +38,28 @@
     "home": "홈",
     "map": "지도",
     "mypage": "내 정보"
+  },
+
+  "route": {
+    "go": "GO!",
+    "subway": "지하철",
+    "bus": "버스",
+    "walk": "도보",
+    "boarding": "탑승",
+    "alighting": "하차",
+    "transit": "환승",
+    "times": "회",
+    "departure": "출발지",
+    "arrival": "도착지"
+  },
+
+  "arrival": {
+    "arrivedAt": "<1>{{destination}}</1>에 도착했어요!",
+    "play": "오디오 재생",
+    "pause": "일시 정지",
+    "continueQuiz": "퀴즈 풀기",
+    "goHome": "홈으로 가기",
+    "cancel": "취소",
+    "buttonLabel": "도착"
   }
 }

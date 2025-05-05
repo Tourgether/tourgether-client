@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Route } from "../types/route";
 import { fetchRouteLane } from "../api/routeApi";
 import { ColoredPolylineSection } from "../types/routeDetail";
@@ -36,10 +37,12 @@ export default function RouteDetailPage() {
   const [docentOpen, setDocentOpen] = useState(false);
   const [arrived, setArrived] = useState(false);
 
+  const { t } = useTranslation();
+
   useEffect(() => {
     if (!mapObj) return;
     const lang = getLanguageId();
-    fetchRouteLane(mapObj, (lang - 1)).then((lanes) => {
+    fetchRouteLane(mapObj, lang - 1).then((lanes) => {
       const colored = convertToColoredSections(lanes);
       setSections(colored);
     });
@@ -89,7 +92,6 @@ export default function RouteDetailPage() {
           <MdRecordVoiceOver size={24} color="#9B28FF" />
         </button>
 
-        {/* 말풍선  TODO: language */}
         <DocentTooltip visible={docentOpen} language="ko" translationId={id} name={destName} />
       </div>
 
@@ -112,17 +114,17 @@ export default function RouteDetailPage() {
             fontSize: "14px",
           }}
         >
-          도착
+          {t("arrival.buttonLabel")}
         </button>
       )}
 
       {/* 도착 오버레이 */}
       {arrived && (
         <ArrivalOverlay
-            visible={true}
-            destinationName={destName}
-            translationId={id}
-            onCancel={() => setArrived(false)}
+          visible={true}
+          destinationName={destName}
+          translationId={id}
+          onCancel={() => setArrived(false)}
         />
       )}
 
