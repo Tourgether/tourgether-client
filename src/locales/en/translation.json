@@ -69,5 +69,9 @@
     "goHome": "Return to Home",
     "cancel": "Cancel",
     "buttonLabel": "Arrive"
+  },
+
+  "search": {
+    "placeholder": "Search"
   }
 }

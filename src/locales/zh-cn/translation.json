@@ -62,5 +62,9 @@
     "goHome": "返回首页",
     "cancel": "取消",
     "buttonLabel": "到达"
+  },
+
+  "search": {
+    "placeholder": "搜索"
   }
 }

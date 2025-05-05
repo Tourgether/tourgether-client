@@ -62,5 +62,9 @@
     "goHome": "ホームに戻る",
     "cancel": "キャンセル",
     "buttonLabel": "到着"
+  },
+
+  "search": {
+    "placeholder": "検索"
   }
 }
