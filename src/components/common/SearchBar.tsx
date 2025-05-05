@@ -1,4 +1,5 @@
 import { FaArrowLeft, FaSearch } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 import '../../styles/Search.css';
 
 interface SearchBarProps {
@@ -9,6 +10,8 @@ interface SearchBarProps {
 }
 
 export default function SearchBar({ value, onChange, onBack, onSearch }: SearchBarProps) {
+  const { t } = useTranslation();
+
   return (
     <div className="search-bar">
       <button onClick={onBack} className="icon-button">
@@ -16,7 +19,7 @@ export default function SearchBar({ value, onChange, onBack, onSearch }: SearchB
       </button>
       <input
         type="text"
-        placeholder="검색"
+        placeholder={t("search.placeholder")}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={(e) => {

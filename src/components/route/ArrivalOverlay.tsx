@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import api from "../../api/core/axios";
 import { FaPlay, FaPause } from "react-icons/fa";
+import { Trans } from "react-i18next";
 import PageContainer from "../common/PageContainer";
 
 interface Props {
@@ -18,6 +20,7 @@ export default function ArrivalOverlay({
   onCancel,
 }: Props) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [audioText, setAudioText] = useState("");
   const [audioUrl, setAudioUrl] = useState("");
   const [isPlaying, setIsPlaying] = useState(false);
@@ -64,151 +67,152 @@ export default function ArrivalOverlay({
   if (!visible) return null;
 
   return (
-   <PageContainer>
-     <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        backdropFilter: "blur(6px)",
-        backgroundColor: "rgba(0,0,0,0.65)",
-        zIndex: 9999,
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "48px 24px",
-        fontFamily: "'Pretendard', 'Noto Sans KR', sans-serif",
-      }}
-    >
-      <h2
+    <PageContainer>
+      <div
         style={{
-          color: "white",
-          fontSize: "24px",
-          fontWeight: "bold",
-          textAlign: "center",
-          marginTop: "32px",
+          position: "fixed",
+          inset: 0,
+          backdropFilter: "blur(6px)",
+          backgroundColor: "rgba(0,0,0,0.65)",
+          zIndex: 9999,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "48px 24px",
+          fontFamily: "'Pretendard', 'Noto Sans KR', sans-serif",
         }}
       >
-        Arrived at <span style={{ color: "#FFD700" }}>{destinationName}</span>!
-      </h2>
+       <h2
+        style={{
+            color: "white",
+            fontSize: "24px",
+            fontWeight: "bold",
+            textAlign: "center",
+            marginTop: "32px",
+        }}
+        >
+        <Trans
+            i18nKey="arrival.arrivedAt"
+            values={{ destination: destinationName }}
+            components={[<span style={{ color: "#FFD700" }} />]}
+        />
+        </h2>
 
-      {/* 설명 카드 */}
-      {audioText && (
+        {audioText && (
+          <div
+            style={{
+              background: "rgba(255, 255, 255, 0.15)",
+              padding: "20px",
+              borderRadius: "16px",
+              color: "white",
+              fontSize: "16px",
+              lineHeight: 1.6,
+              textAlign: "center",
+              maxWidth: "380px",
+            }}
+          >
+            {audioText}
+          </div>
+        )}
+
+        {audioUrl && (
+          <div style={{ marginTop: "12px", marginBottom: "20px" }}>
+            <audio ref={audioRef} src={audioUrl} preload="auto" />
+            <button
+              onClick={toggleAudio}
+              style={{
+                padding: "10px 20px",
+                background: "white",
+                border: "none",
+                borderRadius: "999px",
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                fontWeight: "bold",
+                fontSize: "14px",
+                cursor: "pointer",
+              }}
+            >
+              {isPlaying ? <FaPause size={14} /> : <FaPlay size={14} />}
+              {isPlaying ? t("arrival.pause") : t("arrival.play")}
+            </button>
+          </div>
+        )}
+
         <div
           style={{
-            background: "rgba(255, 255, 255, 0.15)",
-            padding: "20px",
-            borderRadius: "16px",
-            color: "white",
-            fontSize: "16px",
-            lineHeight: 1.6,
-            textAlign: "center",
-            maxWidth: "380px",
+            width: "100%",
+            maxWidth: "400px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "12px",
+            marginBottom: "40px",
           }}
         >
-          {audioText}
-        </div>
-      )}
-
-      {/* 오디오 */}
-      {audioUrl && (
-        <div style={{ marginTop: "12px", marginBottom: "20px" }}>
-          <audio ref={audioRef} src={audioUrl} preload="auto" />
           <button
-            onClick={toggleAudio}
             style={{
-              padding: "10px 20px",
-              background: "white",
+              width: "100%",
+              padding: "14px",
+              background: "linear-gradient(to right, #5B44E8, #C32BAD)",
               border: "none",
               borderRadius: "999px",
-              display: "flex",
-              alignItems: "center",
-              gap: "10px",
+              color: "white",
               fontWeight: "bold",
-              fontSize: "14px",
+              fontSize: "15px",
+              cursor: "pointer",
+            }}
+            onClick={async () => {
+              await postVisit();
+              navigate("/quiz", {
+                state: {
+                  location: destinationName,
+                  translationId,
+                },
+                replace: true,
+              });
+            }}
+          >
+            {t("arrival.continueQuiz")}
+          </button>
+
+          <button
+            onClick={async () => {
+              await postVisit();
+              navigate("/home", { replace: true });
+            }}
+            style={{
+              width: "100%",
+              padding: "14px",
+              background: "white",
+              border: "1px solid #ccc",
+              borderRadius: "999px",
+              fontWeight: "bold",
+              fontSize: "15px",
               cursor: "pointer",
             }}
           >
-            {isPlaying ? <FaPause size={14} /> : <FaPlay size={14} />}
-            {isPlaying ? "Pause Audio" : "Play Audio"}
+            {t("arrival.goHome")}
+          </button>
+
+          <button
+            onClick={onCancel}
+            style={{
+              width: "100%",
+              padding: "14px",
+              background: "transparent",
+              border: "1px solid white",
+              borderRadius: "999px",
+              fontWeight: "bold",
+              fontSize: "15px",
+              cursor: "pointer",
+              color: "white",
+            }}
+          >
+            {t("arrival.cancel")}
           </button>
         </div>
-      )}
-
-      {/* 하단 버튼 영역 */}
-      <div
-        style={{
-          width: "100%",
-          maxWidth: "400px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "12px",
-          marginBottom: "40px",
-        }}
-      >
-        <button
-          style={{
-            width: "100%",
-            padding: "14px",
-            background: "linear-gradient(to right, #5B44E8, #C32BAD)",
-            border: "none",
-            borderRadius: "999px",
-            color: "white",
-            fontWeight: "bold",
-            fontSize: "15px",
-            cursor: "pointer",
-          }}
-          onClick={async () => {
-            await postVisit();
-            navigate("/quiz", {
-              state: {
-                location: destinationName,
-                translationId,
-              },
-              replace: true,
-            });
-          }}
-        >
-          Continue Quiz
-        </button>
-
-        <button
-          onClick={async () => {
-            await postVisit();
-            navigate("/home", { replace: true });
-          }}
-          style={{
-            width: "100%",
-            padding: "14px",
-            background: "white",
-            border: "1px solid #ccc",
-            borderRadius: "999px",
-            fontWeight: "bold",
-            fontSize: "15px",
-            cursor: "pointer",
-          }}
-        >
-          Return to Home
-        </button>
-
-        <button
-          onClick={onCancel}
-          style={{
-            width: "100%",
-            padding: "14px",
-            background: "transparent",
-            border: "1px solid white",
-            borderRadius: "999px",
-            fontWeight: "bold",
-            fontSize: "15px",
-            cursor: "pointer",
-            color: "white",
-          }}
-        >
-          Cancel
-        </button>
       </div>
-    </div>
-   </PageContainer>
+    </PageContainer>
   );
 }

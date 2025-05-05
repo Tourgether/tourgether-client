@@ -6,6 +6,7 @@ import { RouteFilterTabs, TabType } from "../components/route/RouteFilterTabs";
 import { RouteCardList } from "../components/route/RouteCardList";
 import { fetchRoutes } from "../api/routeApi";
 import { Route } from "../types/route";
+import { getLanguageId } from "../utils/getLanguageId";
 
 interface LocationState {
   destination?: {
@@ -38,7 +39,9 @@ export default function RouteZPage() {
         const endX = destination.lng;
         const endY = destination.lat;
 
-        const fetchedRoutes = await fetchRoutes(startX, startY, endX, endY);
+        const lang = getLanguageId();
+
+        const fetchedRoutes = await fetchRoutes(startX, startY, endX, endY, (lang - 1));
         setStart({ lat: startY, lng: startX });
         setRoutes(fetchedRoutes);
       },

@@ -6,6 +6,7 @@ import {
   fetchAttractionsWithinBounds,
   AttractionMapSummary,
 } from "../../api/attractionApi";
+import { getNaverMapLanguageCode } from "../../utils/getLanguageId";
 import "../../styles/AttractionBottomSheet.css";
 
 const toRad = (deg: number) => (deg * Math.PI) / 180;
@@ -155,7 +156,7 @@ export default function MapView() {
   const initializeMap = () => {
     if (mapRef.current || !mapContainerRef.current || !window.naver) return;
 
-    const fallback = new window.naver.maps.LatLng(37.5665, 126.978); // 서울시청
+    const fallback = new window.naver.maps.LatLng(37.5665, 126.978);
     const map = new window.naver.maps.Map(mapContainerRef.current, {
       center: fallback,
       zoom: 14,
@@ -179,7 +180,7 @@ export default function MapView() {
         const pos = new window.naver.maps.LatLng(coords.latitude, coords.longitude);
         setUserLocation(pos);
         drawOrMoveMyLocationMarker(pos);
-        mapRef.current?.setCenter(pos); // 지도 중심 이동
+        mapRef.current?.setCenter(pos);
       },
       (err) => {
         console.warn("❗ 위치 실패:", err);
@@ -187,7 +188,7 @@ export default function MapView() {
       {
         enableHighAccuracy: false,
         timeout: 5000,
-        maximumAge: 10_000
+        maximumAge: 10_000,
       }
     );
 
@@ -210,16 +211,17 @@ export default function MapView() {
 
   useEffect(() => {
     const scriptId = "naver-map-sdk";
+    const lang = getNaverMapLanguageCode();
 
     if (document.getElementById(scriptId)) {
       waitForNaverMaps(() => {
-        initializeMap();        // ✅ 지도 먼저 생성
-        startGeolocation();     // ✅ 위치 추적은 나중에
+        initializeMap();
+        startGeolocation();
       });
     } else {
       const script = document.createElement("script");
       script.id = scriptId;
-      script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${import.meta.env.VITE_NAVER_MAP_CLIENT_ID}&language=en`;
+      script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${import.meta.env.VITE_NAVER_MAP_CLIENT_ID}&language=${lang}`;
       script.async = true;
       script.onload = () =>
         waitForNaverMaps(() => {

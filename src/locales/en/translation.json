@@ -46,5 +46,32 @@
     "home": "HOME",
     "map": "MAP",
     "mypage": "MY PAGE"
+  },
+
+  "route": {
+    "go": "GO!",
+    "subway": "Subway",
+    "bus": "Bus",
+    "walk": "Walk",
+    "boarding": "Boarding",
+    "alighting": "Alighting",
+    "transit": "Transit",
+    "times": "x",
+    "departure": "Departure",
+    "arrival": "Arrival"
+  },
+  
+  "arrival": {
+    "arrivedAt": "Arrived at <1>{{destination}}</1>!",
+    "play": "Play Audio",
+    "pause": "Pause Audio",
+    "continueQuiz": "Continue Quiz",
+    "goHome": "Return to Home",
+    "cancel": "Cancel",
+    "buttonLabel": "Arrive"
+  },
+
+  "search": {
+    "placeholder": "Search"
   }
 }

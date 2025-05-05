@@ -39,5 +39,32 @@
     "home": "首页",
     "map": "地图",
     "mypage": "我的页面"
+  },
+
+  "route": {
+    "go": "GO!",
+    "subway": "地铁",
+    "bus": "公交车",
+    "walk": "步行",
+    "boarding": "上车",
+    "alighting": "下车",
+    "transit": "换乘",
+    "times": "次",
+    "departure": "出发地",
+    "arrival": "到达地"
+  },
+
+  "arrival": {
+    "arrivedAt": "已到达 <1>{{destination}}</1>！",
+    "play": "播放音频",
+    "pause": "暂停音频",
+    "continueQuiz": "继续答题",
+    "goHome": "返回首页",
+    "cancel": "取消",
+    "buttonLabel": "到达"
+  },
+
+  "search": {
+    "placeholder": "搜索"
   }
 }
