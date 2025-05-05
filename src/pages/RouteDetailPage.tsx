@@ -10,6 +10,7 @@ import { MdRecordVoiceOver } from "react-icons/md";
 import RouteDetailBottomSheet from "../components/route/RouteDetailBottomSheet";
 import DocentTooltip from "../components/route/DocentTootip";
 import ArrivalOverlay from "../components/route/ArrivalOverlay";
+import { getLanguageId } from "../utils/getLanguageId";
 
 interface Coord {
   lat: number;
@@ -37,7 +38,8 @@ export default function RouteDetailPage() {
 
   useEffect(() => {
     if (!mapObj) return;
-    fetchRouteLane(mapObj).then((lanes) => {
+    const lang = getLanguageId();
+    fetchRouteLane(mapObj, (lang - 1)).then((lanes) => {
       const colored = convertToColoredSections(lanes);
       setSections(colored);
     });

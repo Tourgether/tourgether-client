@@ -7,7 +7,7 @@ export const fetchRoutes = async (
   startY: number,
   endX: number,
   endY: number,
-  lang: number = 0
+  lang: number
 ): Promise<Route[]> => {
   try {
     const response = await api.get("/api/v1/route/search", {
@@ -37,7 +37,7 @@ export interface Lane {
 
 export async function fetchRouteLane(
   mapObj: string,
-  lang = 0
+  lang: number
 ): Promise<Lane[]> {
   try {
     const response = await api.get("/api/v1/route/lane", {
