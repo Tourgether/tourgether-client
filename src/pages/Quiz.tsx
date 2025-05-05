@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import api from "../api/core/axios";
 import PageContainer from "../components/common/PageContainer";
 import { MdRecordVoiceOver } from "react-icons/md";
@@ -14,11 +14,14 @@ interface Quiz {
 
 export default function Quiz() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { translationId, destinationName } = location.state || {};
+  const [thumbnailImgUrl, setThumbnailImgUrl] = useState<string>("");
 
-  const translationId = 1;
-  const destinationName = "경복궁";
-  const thumbnailImgUrl =
-    "https://img.freepik.com/free-photo/gyeongbokgung-palace_74190-3267.jpg?t=st=1745738286~exp=1745741886~hmac=ba4f1b87d7aa6082e6760a5cb191bc39895772d65973a39361ee81602a891c49&w=2000";
+  // const translationId = 1;
+  // const destinationName = "경복궁";
+  // const thumbnailImgUrl =
+  //   "https://img.freepik.com/free-photo/gyeongbokgung-palace_74190-3267.jpg?t=st=1745738286~exp=1745741886~hmac=ba4f1b87d7aa6082e6760a5cb191bc39895772d65973a39361ee81602a891c49&w=2000";
 
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -43,7 +46,17 @@ export default function Quiz() {
       }
     };
 
+    const fetchAttractionDetail = async () => {
+      try {
+        const response = await api.get(`/api/v1/attractions/${translationId}`);
+        setThumbnailImgUrl(response.data.data.thumbnailImgUrl);
+      } catch (err) {
+        console.error("관광지 상세정보 불러오기 실패", err);
+      }
+    };
+
     fetchQuizzes();
+    fetchAttractionDetail();
   }, [translationId, navigate]);
 
   const handleAnswer = (userAnswer: boolean) => {
