@@ -16,7 +16,7 @@ export default function MenuCard() {
     try {
       await api.post("/api/v1/auth/logout");
       clearTokens();
-      localStorage.clear;
+      localStorage.clear();
       navigate("/");
     } catch (error) {
       console.error("🚨 로그아웃 실패:", error);
