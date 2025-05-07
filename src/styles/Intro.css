@@ -1,6 +1,8 @@
 .intro-layout {
   width: 100%;
   min-height: 100vh;
+  overflow: hidden;
+  position: relative;
   max-width: 428px;
   background: white;
   display: flex;
@@ -93,6 +95,7 @@
 
 .kakao {
   background-color: #fee500;
+  color: black;
 }
 
 .naver {
