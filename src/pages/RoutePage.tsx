@@ -14,6 +14,7 @@ interface LocationState {
     lat: number;
     lng: number;
     id: string;
+    attractionId: number;
   };
 }
 
@@ -81,6 +82,7 @@ export default function RouteZPage() {
           end={{ lat: destination.lat, lng: destination.lng }}
           destName={destination.name}
           id={destination.id}
+          attractionId={destination.attractionId}
         />
       )}
     </PageContainer>

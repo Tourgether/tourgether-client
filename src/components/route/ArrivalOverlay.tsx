@@ -10,6 +10,7 @@ interface Props {
   visible: boolean;
   destinationName: string;
   translationId: string;
+  attractionId: number,
   onCancel: () => void;
 }
 
@@ -17,6 +18,7 @@ export default function ArrivalOverlay({
   visible,
   destinationName,
   translationId,
+  attractionId,
   onCancel,
 }: Props) {
   const navigate = useNavigate();
@@ -46,7 +48,7 @@ export default function ArrivalOverlay({
   const postVisit = async () => {
     try {
       await api.post("/api/v1/visits", {
-        attractionId: Number(translationId),
+        attractionId: attractionId,
       });
     } catch (err) {
       console.error("방문 기록 실패:", err);
@@ -81,6 +83,8 @@ export default function ArrivalOverlay({
           alignItems: "center",
           padding: "48px 24px",
           fontFamily: "'Pretendard', 'Noto Sans KR', sans-serif",
+          overflowY: "auto",
+          maxHeight: "100vh", 
         }}
       >
        <h2

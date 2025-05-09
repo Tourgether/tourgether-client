@@ -12,9 +12,10 @@ interface RouteCardProps {
   end: { lat: number; lng: number };
   destName: string;
   id: string;
+  attractionId: number;
 }
 
-export function RouteCard({ route, start, end, destName, id }: RouteCardProps) {
+export function RouteCard({ route, start, end, destName, id, attractionId }: RouteCardProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -37,7 +38,7 @@ export function RouteCard({ route, start, end, destName, id }: RouteCardProps) {
 
   const handleGoClick = () => {
     navigate("/route-detail", {
-      state: { route, start, end, destName, id }
+      state: { route, start, end, destName, id, attractionId }
     });
   };
 
