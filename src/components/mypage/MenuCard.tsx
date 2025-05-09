@@ -6,11 +6,13 @@ import styles from "../../styles/mypage/MenuCard.module.css";
 import { Globe, Heart, Copy, LogOut, UserX } from "lucide-react";
 import api from "../../api/core/axios";
 import { clearTokens } from "../../utils/tokenStorage";
+import { useWithdraw } from "../../hooks/useWithdraw";
 
 export default function MenuCard() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
+  const { withdraw } = useWithdraw();
 
   const handleLogout = async () => {
     try {
@@ -48,6 +50,7 @@ export default function MenuCard() {
     {
       icon: <UserX size={24} strokeWidth={1.5} color="#E74C3C" />,
       label: t("mypage.withdraw"),
+      onClick: () => withdraw(),
     },
   ];
 
