@@ -26,11 +26,12 @@ export default function RouteDetailPage() {
       end: Coord;
       destName: string;
       id: string;
+      attractionId: number;
     };
   };
 
   const navigate = useNavigate();
-  const { route, start, end, destName, id } = location.state;
+  const { route, start, end, destName, id, attractionId } = location.state;
   const mapObj = route.info.mapObj;
 
   const [sections, setSections] = useState<ColoredPolylineSection[]>([]);
@@ -124,6 +125,7 @@ export default function RouteDetailPage() {
           visible={true}
           destinationName={destName}
           translationId={id}
+          attractionId={attractionId}
           onCancel={() => setArrived(false)}
         />
       )}

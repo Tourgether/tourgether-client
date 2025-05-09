@@ -148,6 +148,7 @@ export default function AttractionDetailPage() {
                     lat: detail.latitude,
                     lng: detail.longitude,
                     id: id,
+                    attractionId: detail.attractionId,
                   },
                 },
               })

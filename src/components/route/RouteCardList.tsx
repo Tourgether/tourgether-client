@@ -7,13 +7,14 @@ interface RouteCardListProps {
   end: { lat: number; lng: number };
   destName: string;
   id: string;
+  attractionId: number;
 }
 
-export function RouteCardList({ routes, start, end, destName, id }: RouteCardListProps) {
+export function RouteCardList({ routes, start, end, destName, id, attractionId }: RouteCardListProps) {
   return (
     <div>
       {routes.map((route, index) => (
-        <RouteCard key={index} route={route} start={start} end={end} destName={destName} id={id}/>
+        <RouteCard key={index} route={route} start={start} end={end} destName={destName} id={id} attractionId={attractionId}/>
       ))}
     </div>
   );
