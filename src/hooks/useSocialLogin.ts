@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { socialLogin } from "../api/auth/socialLogin";
 import { saveTokens } from "../utils/tokenStorage";
 import api from "../api/core/axios";
+import axios from "axios";
 
 interface MemberInfo {
   provider: string;
@@ -51,7 +52,19 @@ export function useSocialLogin() {
         // 6) 홈으로 이동
         navigate("/home", { replace: true });
       }
-    } catch (error) {
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        const status = error.response?.status;
+
+        if (status === 410) {
+          alert("탈퇴한 회원입니다. 관리자에 문의해주십시오.");
+        } else {
+          alert("로그인 중 문제가 발생했습니다. 다시 시도해 주세요.");
+        }
+      } else {
+        alert("예상치 못한 오류가 발생했습니다.");
+      }
+
       console.error(`${provider} 로그인 실패`, error);
       navigate("/intro", { replace: true });
     }
