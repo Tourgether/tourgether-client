@@ -30,12 +30,10 @@ export default function RouteZPage() {
     if (!destination) return;
 
     navigator.geolocation.getCurrentPosition(
-      async () => {
-        // TODO: 고정좌표 -> 실제좌표로
-        // const startX = pos.coords.longitude;
-        // const startY = pos.coords.latitude;
-        const startX = 126.970833;
-        const startY = 37.554722;
+      async (pos) => {
+        const startX = pos.coords.longitude;
+        const startY = pos.coords.latitude;
+
 
         const endX = destination.lng;
         const endY = destination.lat;
