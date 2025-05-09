@@ -83,6 +83,8 @@ export default function ArrivalOverlay({
           alignItems: "center",
           padding: "48px 24px",
           fontFamily: "'Pretendard', 'Noto Sans KR', sans-serif",
+          overflowY: "auto",
+          maxHeight: "100vh", 
         }}
       >
        <h2
